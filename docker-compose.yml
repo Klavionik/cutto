@@ -10,6 +10,8 @@ services:
       - DEBUG
       - ALLOWED_HOSTS
       - DATABASE_URL
+    env_file:
+      - .env
     ports:
       - "8010:8000"
     volumes:
@@ -21,6 +23,8 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
+    env_file:
+      - .env
     healthcheck:
       test: pg_isready --username $POSTGRES_USER || exit 1
       interval: 3s

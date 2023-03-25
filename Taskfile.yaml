@@ -40,3 +40,11 @@ tasks:
   logs.web:
     cmds:
       - docker compose logs web
+
+  makemigrations:
+    cmds:
+      - docker compose exec web python manage.py makemigrations
+
+  migrate:
+    cmds:
+      - docker compose exec web python manage.py migrate
