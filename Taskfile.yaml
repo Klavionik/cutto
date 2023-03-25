@@ -1,0 +1,22 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  flake8:
+    cmds:
+      - pre-commit run flake8 --all-files
+
+  black:
+    cmds:
+      - pre-commit run black --all-files
+
+  isort:
+    cmds:
+      - pre-commit run isort --all-files
+
+  lint:
+    cmds:
+      - task: isort
+      - task: black
+      - task: flake8
