@@ -20,3 +20,23 @@ tasks:
       - task: isort
       - task: black
       - task: flake8
+
+  build:
+    cmds:
+      - docker compose build
+
+  up:
+    cmds:
+      - docker compose up -d
+
+  pyshell:
+    cmds:
+      - docker compose exec web python manage.py shell
+
+  shell:
+    cmds:
+      - docker compose exec web bash
+
+  logs.web:
+    cmds:
+      - docker compose logs web
