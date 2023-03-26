@@ -1,0 +1,30 @@
+{$HOST} {
+	encode gzip
+
+	log {
+		output stdout
+		format console
+	}
+
+	handle /api/* {
+		reverse_proxy web:8000
+	}
+
+	handle /admin {
+		redir /admin /admin/
+	}
+
+	handle /admin/* {
+		reverse_proxy web:8000
+	}
+
+	handle /static/* {
+		reverse_proxy web:8000
+	}
+
+	handle {
+		root * /srv
+		try_files {path} /index.html =404
+		file_server
+	}
+}

@@ -15,7 +15,7 @@ tasks:
     cmds:
       - pre-commit run isort --all-files
 
-  lint:
+  lint.backend:
     cmds:
       - task: isort
       - task: black
@@ -48,3 +48,15 @@ tasks:
   migrate:
     cmds:
       - docker compose exec web python manage.py migrate
+
+  createsu:
+    cmds:
+      - docker compose exec web python manage.py createsuperuser
+
+  reload.caddy:
+    cmds:
+      - docker compose exec -w /etc/caddy frontend caddy reload
+
+  fmt.caddy:
+    cmds:
+      - docker compose exec -w /etc/caddy frontend caddy fmt Caddyfile --overwrite

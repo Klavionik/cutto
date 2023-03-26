@@ -7,6 +7,7 @@ RUN poetry config virtualenvs.create false
 COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-root --without=dev
 COPY . .
+RUN python manage.py collectstatic --noinput
 
 ARG USER=app
 ARG UID=1000
@@ -15,4 +16,4 @@ RUN useradd $USER --uid $UID --gid $UID --no-create-home
 USER app:app
 EXPOSE 8000
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000", "--nostatic"]
