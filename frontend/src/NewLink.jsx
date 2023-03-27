@@ -2,27 +2,21 @@ import { Button, Paper, PasswordInput, Stack, Text, TextInput } from "@mantine/c
 import { createLink } from "./api.js"
 import { DateTimePicker } from "@mantine/dates"
 import LinkDone from "./LinkDone.jsx"
+import { OwnerContext } from "./App.jsx"
 import { SITE_URL } from "./config.js"
+import { useContext } from "react"
 import { useForm } from "@mantine/form"
-import { useLocalStorage } from "@mantine/hooks"
 import { useState } from "react"
 
 function NewLinkForm({ onSubmit }) {
-  const [owner] = useLocalStorage({
-    key: "shortener.owner",
-    defaultValue: crypto.randomUUID(),
-  })
-
   const form = useForm({
     initialValues: {
       targetUrl: "",
       alias: "",
       password: "",
       expiresAfter: null,
-      owner,
     },
   })
-
   const alias = form.values.alias || "~auto~"
 
   return (
@@ -30,9 +24,9 @@ function NewLinkForm({ onSubmit }) {
       <Stack>
         <Text>
           Your link:&nbsp;
-          <Text component={"span"} weight="bold">
+          <Text span weight="bold">
             {SITE_URL}/go/
-            <Text component={"span"} color="red">
+            <Text span color="blue.6">
               {alias}
             </Text>
           </Text>
@@ -61,7 +55,7 @@ function NewLinkForm({ onSubmit }) {
           description="(Optional) Make the link expire after some time"
           {...form.getInputProps("expiresAfter")}
         />
-        <Button type="submit" color="red.6">
+        <Button type="submit" color="teal.7">
           Shorten!
         </Button>
       </Stack>
@@ -72,9 +66,10 @@ function NewLinkForm({ onSubmit }) {
 export default function NewLink() {
   const [created, setCreated] = useState(false)
   const [data, setData] = useState({})
+  const owner = useContext(OwnerContext)
 
   async function onSubmit(payload) {
-    const data = await createLink(payload)
+    const data = await createLink({ ...payload, owner })
     setData(data)
     setCreated(true)
   }

@@ -28,21 +28,25 @@ export default function LinkDone({ data }) {
   return (
     <Stack spacing="xl">
       <Title color="teal">Done! 🎉</Title>
-      <Stack spacing="xs">
-        <Title order={4}>Here's your short link:</Title>
+      <Stack spacing={0}>
+        <Text>Here's your short link:</Text>
         <Group spacing={5}>
           <Text fw="bold">{fullLink}</Text>
           <CopyURLButton value={fullLink} />
         </Group>
-        <Alert title="Heads up!" color="orange">
-          Bookmark <Link to={`/list/${data.owner}`}>this page</Link> to manage your short links and
-          access statistics. This bookmark is going to contain your unique ID&nbsp;
-          <Text component={"span"} fw="bold">
-            {data.owner}
-          </Text>
-          . Make sure you don't lose the bookmark or the ID!
-        </Alert>
       </Stack>
+      <Alert title="Heads up!" color="orange">
+        Your link history is saved on this device. Bookmark&nbsp;
+        <Link to={`/list/${data.owner}`}>this page</Link> to access it from any other device. This
+        bookmark is going to contain your unique ID&nbsp;
+        <Text span fw="bold">
+          {data.owner}
+        </Text>
+        .
+        <br />
+        <br />
+        Make sure you don't lose the bookmark or the ID!
+      </Alert>
     </Stack>
   )
 }

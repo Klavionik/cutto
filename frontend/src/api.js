@@ -13,6 +13,12 @@ const transformKey =
     [transformFunction(key), value]
 
 const adaptFromServer = (payload) => {
+  if (Array.isArray(payload)) {
+    return payload.map((item) =>
+      Object.fromEntries(Object.entries(item).map(transformKey(camelCase)))
+    )
+  }
+
   return Object.fromEntries(Object.entries(payload).map(transformKey(camelCase)))
 }
 
@@ -25,4 +31,16 @@ export const createLink = (payload) => {
     .post("links/", { json: adaptToServer(payload) })
     .json()
     .then(adaptFromServer)
+}
+
+export const createOwner = () => {
+  return client.post("owner/").json()
+}
+
+export const listOwnerLinks = (owner) => {
+  return client.get(`owner/${owner}/links/`).json().then(adaptFromServer)
+}
+
+export const deleteOwnerLinks = (owner) => {
+  return client.delete(`owner/${owner}/links/`)
 }

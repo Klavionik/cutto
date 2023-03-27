@@ -1,9 +1,11 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import App from "./App"
+import LinkList from "./LinkList.jsx"
+import LinkListWrapper from "./LinkListWrapper.jsx"
+import { action as linksAction, loader as linksLoader } from "./LinkList.jsx"
+import NewLink from "./NewLink.jsx"
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import NewLink from "./NewLink.jsx"
-import LinkList from "./LinkList.jsx"
 
 const router = createBrowserRouter([
   {
@@ -20,14 +22,16 @@ const router = createBrowserRouter([
       },
       {
         path: "list",
+        element: <LinkListWrapper />,
+      },
+      {
+        path: "list/:owner",
         element: <LinkList />,
+        loader: linksLoader,
+        action: linksAction,
       },
     ],
   },
 ])
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-)
+ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router} />)
