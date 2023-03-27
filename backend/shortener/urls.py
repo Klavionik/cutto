@@ -1,10 +1,10 @@
 from django.urls import include, path
 
-from shortener.views import to_target
+from shortener.views import ToTargetView
 
 app_name = "shortener"
 
 urlpatterns = [
-    path("go/<str:alias>/", to_target, name="to_target"),
+    path("go/<str:alias>/", ToTargetView.as_view(), name="to_target"),
     path("api/", include("shortener.api.urls")),
 ]

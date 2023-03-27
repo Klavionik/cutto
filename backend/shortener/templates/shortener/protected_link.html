@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Password Protected Link</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    .mantine-button {
+      color: white;
+      font-weight: 600;
+      background-color: #0ca678;
+      border-radius: 4px;
+      border: none;
+      height: 36px;
+      padding-inline: 18px;
+      cursor: pointer;
+    }
+
+    .mantine-button:hover {
+      background-color: #099268;
+    }
+  </style>
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="title is-size-5 has-text-centered">Owner of this link protected it with a password</div>
+        <form class="box" method="post" action="{% url 'shortener:to_target' alias=alias %}">
+          {% csrf_token %}
+          <div class="field">
+            <label class="label" for="password">Link password</label>
+            <div class="control">
+              <input name="password" id="password" type="password" class="input" value="{{ form.password.value }}">
+            </div>
+            {% if form and form.password.errors %}
+              {% for error in form.password.errors %}
+                <p class="help is-danger">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="mantine-button">Go ahead!</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

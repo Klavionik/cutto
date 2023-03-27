@@ -1,6 +1,7 @@
 import { Button, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
 import { deleteOwnerLinks, listOwnerLinks } from "./api.js"
 import { useFetcher, useLoaderData } from "react-router-dom"
+import { SITE_URL } from "./config.js"
 
 export async function loader({ params }) {
   return await listOwnerLinks(params.owner)
@@ -23,7 +24,7 @@ export default function LinkList() {
     return (
       <tr key={link.alias}>
         <td className="td-alias">
-          <a href={`/go/${link.alias}`}>
+          <a href={`${SITE_URL}/go/${link.alias}`}>
             <Text>{link.alias}</Text>
           </a>
         </td>
