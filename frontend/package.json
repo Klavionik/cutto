@@ -13,11 +13,16 @@
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@mantine/core": "^6.0.0",
+    "@mantine/dates": "^6.0.4",
     "@mantine/form": "^6.0.0",
     "@mantine/hooks": "^6.0.0",
-    "@tabler/icons": "^2.11.0",
+    "@tabler/icons-react": "^2.11.0",
+    "camel-case": "^4.1.2",
+    "ky": "^0.33.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.9.0",
+    "snake-case": "^3.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
