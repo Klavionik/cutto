@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Link',
             fields=[
-                ('alias', models.SlugField(blank=True, default=shortener.models.make_alias, primary_key=True, serialize=False, unique=True)),
+                ('alias', models.SlugField(blank=True, primary_key=True, serialize=False)),
                 ('target_url', models.URLField()),
                 ('password', models.CharField(blank=True, max_length=12)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),

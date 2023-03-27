@@ -7,7 +7,7 @@ def make_alias(length=8):
 
 
 class Link(models.Model):
-    alias = models.SlugField(primary_key=True, unique=True, blank=True, default=make_alias)
+    alias = models.SlugField(primary_key=True, blank=True)
     target_url = models.URLField()
     password = models.CharField(max_length=12, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
