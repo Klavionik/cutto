@@ -60,3 +60,15 @@ tasks:
   fmt.caddy:
     cmds:
       - docker compose exec -w /etc/caddy frontend caddy fmt Caddyfile --overwrite
+
+  logs.worker:
+    cmds:
+      - docker compose logs -f worker
+
+  down:
+    cmds:
+      - docker compose down -v
+
+  ps:
+    cmds:
+      - docker compose ps -a

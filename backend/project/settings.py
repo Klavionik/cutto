@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "corsheaders",
+    "django_celery_beat",
     "shortener",
 ]
 
@@ -130,3 +131,14 @@ CSRF_TRUSTED_ORIGINS = ["https://" + env.str("HOST", "shortener.localhost")]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CORS_ALLOW_ALL_ORIGINS = env.bool("DEBUG", default=True)
+
+CELERY_BROKER_URL = "pyamqp://guest@broker:5672"
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+CELERY_BEAT_SCHEDULE = {
+    "delete_expired_links": {
+        "task": "shortener.tasks.delete_expires_links",
+        "schedule": timedelta(minutes=1),
+    }
+}
+
+REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": []}
