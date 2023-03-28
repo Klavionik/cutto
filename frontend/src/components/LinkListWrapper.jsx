@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react"
-import { OwnerContext } from "./App.jsx"
+import { OwnerContext } from "../OwnerContext.js"
 import { useNavigate } from "react-router-dom"
 
 export default function LinkListWrapper() {

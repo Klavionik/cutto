@@ -1,13 +1,12 @@
 import { AppShell, Navbar, NavLink, ThemeIcon, Title } from "@mantine/core"
-import { createContext, useEffect } from "react"
+import { useEffect } from "react"
 import { IconLayersLinked, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
 import { Link, Outlet } from "react-router-dom"
 import { createOwner } from "./api.js"
 import { ThemeProvider } from "./ThemeProvider"
 import { useLocalStorage } from "@mantine/hooks"
 import { useMatch } from "react-router-dom"
-
-export const OwnerContext = createContext(null)
+import { OwnerContext } from "./OwnerContext.js"
 
 export default function App() {
   const newLinkPage = useMatch({ path: "/new" })

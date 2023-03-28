@@ -1,7 +1,7 @@
 import { Button, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
-import { deleteOwnerLinks, listOwnerLinks } from "./api.js"
+import { deleteOwnerLinks, listOwnerLinks } from "../api.js"
 import { useFetcher, useLoaderData } from "react-router-dom"
-import { SITE_URL } from "./config.js"
+import { SITE_URL } from "../config.js"
 
 export async function loader({ params }) {
   return await listOwnerLinks(params.owner)

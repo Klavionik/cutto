@@ -1,7 +1,7 @@
 import { ActionIcon, Alert, CopyButton, Group, Stack, Text, Title } from "@mantine/core"
 import { IconCheck, IconLink } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
-import { SITE_URL } from "./config.js"
+import { SITE_URL } from "../config.js"
 
 function CopyURLButton({ value }) {
   function handleClick(copy) {
