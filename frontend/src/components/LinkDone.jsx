@@ -1,5 +1,5 @@
 import { ActionIcon, Alert, CopyButton, Group, Stack, Text, Title } from "@mantine/core"
-import { IconCheck, IconLink } from "@tabler/icons-react"
+import { IconCheck, IconCopy } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
 import { SITE_URL } from "../config.js"
 
@@ -14,8 +14,8 @@ function CopyURLButton({ value }) {
   return (
     <CopyButton value={value}>
       {({ copied, copy }) => (
-        <ActionIcon color={copied ? "teal" : "gray"} onClick={handleClick(copy)}>
-          {copied ? <IconCheck size={18} /> : <IconLink size={18} />}
+        <ActionIcon color={copied ? "teal" : "blue"} onClick={handleClick(copy)}>
+          {copied ? <IconCheck size={18} /> : <IconCopy size={18} />}
         </ActionIcon>
       )}
     </CopyButton>
@@ -26,7 +26,7 @@ export default function LinkDone({ data }) {
   const fullLink = `${SITE_URL}/go/${data.alias}`
 
   return (
-    <Stack spacing="xl">
+    <Stack spacing="xl" align="flex-start">
       <Title color="teal">Done! 🎉</Title>
       <Stack spacing={0}>
         <Text>Here's your short link:</Text>
@@ -35,17 +35,10 @@ export default function LinkDone({ data }) {
           <CopyURLButton value={fullLink} />
         </Group>
       </Stack>
-      <Alert title="Heads up!" color="orange">
+      <Alert title="Important" color="orange">
         Your link history is saved on this device. Bookmark&nbsp;
         <Link to={`/list/${data.owner}`}>this page</Link> to access it from any other device. This
-        bookmark is going to contain your unique ID&nbsp;
-        <Text span fw="bold">
-          {data.owner}
-        </Text>
-        .
-        <br />
-        <br />
-        Make sure you don't lose the bookmark or the ID!
+        bookmark is going to contain your unique ID.
       </Alert>
     </Stack>
   )
