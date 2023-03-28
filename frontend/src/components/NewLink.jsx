@@ -41,7 +41,7 @@ function NewLinkForm({ onSubmit }) {
         <TextInput
           placeholder="myshinylink"
           label="Link alias"
-          description="(Optional) Fill it or leave for use to autogenerate"
+          description="(Optional) Fill it or leave it blank to autogenerate"
           {...form.getInputProps("alias")}
         />
         <PasswordInput
