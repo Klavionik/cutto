@@ -1,6 +1,6 @@
 import { AppShell, Navbar, NavLink, ThemeIcon, Title } from "@mantine/core"
 import { useEffect } from "react"
-import { IconLayersLinked, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
+import { IconHome, IconLayersLinked, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
 import { Link, Outlet } from "react-router-dom"
 import { createOwner } from "./api.js"
 import { ThemeProvider } from "./ThemeProvider"
@@ -9,6 +9,7 @@ import { useMatch } from "react-router-dom"
 import { OwnerContext } from "./OwnerContext.js"
 
 export default function App() {
+  const rootMatch = useMatch({ path: "/" })
   const newLinkPage = useMatch({ path: "/new" })
   const linkListPage = useMatch({ path: "/list/:owner" })
   const [owner, setOwner] = useLocalStorage({ key: "owner", getInitialValueInEffect: false })
@@ -33,6 +34,16 @@ export default function App() {
               </Title>
             </Navbar.Section>
             <Navbar.Section grow mt="md">
+              <NavLink
+                component={Link}
+                to="/"
+                label="Home"
+                p="md"
+                variant="filled"
+                color="teal.7"
+                active={Boolean(rootMatch)}
+                icon={<IconHome size={18} />}
+              />
               <NavLink
                 component={Link}
                 to="/new"
