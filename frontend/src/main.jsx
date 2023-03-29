@@ -7,11 +7,13 @@ import NewLink from "./components/NewLink.jsx"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import Welcome from "./components/Welcome.jsx"
+import Error from "./components/Error.jsx"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -20,6 +22,7 @@ const router = createBrowserRouter([
       {
         path: "new",
         element: <NewLink />,
+        errorElement: <Error />,
       },
       {
         path: "list",
@@ -30,6 +33,7 @@ const router = createBrowserRouter([
         element: <LinkList />,
         loader: linksLoader,
         action: linksAction,
+        errorElement: <Error />,
       },
     ],
   },
