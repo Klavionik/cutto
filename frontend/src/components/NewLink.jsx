@@ -1,12 +1,13 @@
-import { Button, Paper, PasswordInput, Stack, Text, TextInput } from "@mantine/core"
-import { createLink } from "../api.js"
+import { Button, Paper, PasswordInput, Stack, Text, TextInput, Tooltip } from "@mantine/core"
+import { createLink, getAliasAvailability } from "../api.js"
+import { IconAlertCircleFilled, IconCircleCheckFilled } from "@tabler/icons-react"
+import { useContext, useEffect, useState } from "react"
+import { useDebouncedValue, useFocusTrap } from "@mantine/hooks"
 import { DateTimePicker } from "@mantine/dates"
 import LinkDone from "./LinkDone.jsx"
 import { OwnerContext } from "../OwnerContext.js"
 import { SITE_URL } from "../config.js"
-import { useContext } from "react"
 import { useForm } from "@mantine/form"
-import { useState } from "react"
 import validators from "../validators.js"
 
 function NewLinkForm({ onSubmit }) {
@@ -26,7 +27,47 @@ function NewLinkForm({ onSubmit }) {
       expiresAfter: validators.minTime,
     },
   })
+  const [aliasAvailable, setAliasAvailable] = useState(null)
   const alias = form.values.alias || "~auto~"
+  const { value, ...aliasProps } = form.getInputProps("alias")
+  const [debounced] = useDebouncedValue(value, 300)
+  const focusTrapRef = useFocusTrap()
+
+  function resolveAliasIcon() {
+    let component = null
+
+    if (aliasAvailable) {
+      component = (
+        <Tooltip label="Alias available">
+          <IconCircleCheckFilled style={{ color: "#12B886" }} />
+        </Tooltip>
+      )
+    }
+
+    if (aliasAvailable === false) {
+      component = (
+        <Tooltip label="Alias taken">
+          <IconAlertCircleFilled style={{ color: "#FA5252" }} />
+        </Tooltip>
+      )
+    }
+
+    return component
+  }
+
+  useEffect(() => {
+    if (!debounced) return setAliasAvailable(null)
+
+    getAliasAvailability(debounced)
+      .then(() => setAliasAvailable(true))
+      .catch(() => setAliasAvailable(false))
+  }, [debounced])
+
+  function onAliasKeyDown(event) {
+    if (!validators.isSlug(event.key)) {
+      event.preventDefault()
+    }
+  }
 
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
@@ -41,6 +82,7 @@ function NewLinkForm({ onSubmit }) {
           </Text>
         </Text>
         <TextInput
+          ref={focusTrapRef}
           placeholder="https://example.com/extralongurl?with=stuff"
           label="Target URL"
           description="Where the link should lead?"
@@ -50,8 +92,10 @@ function NewLinkForm({ onSubmit }) {
         <TextInput
           placeholder="myshinylink"
           label="Link alias"
-          description="(Optional) Fill it or leave it blank to autogenerate"
-          {...form.getInputProps("alias")}
+          description="(Optional) Allowed characters: -, a-z, A-Z, 0-9, _"
+          rightSection={resolveAliasIcon()}
+          {...aliasProps}
+          onKeyDown={onAliasKeyDown}
         />
         <PasswordInput
           placeholder="qwerty is a good one"
@@ -67,7 +111,11 @@ function NewLinkForm({ onSubmit }) {
           minDate={new Date()}
           {...form.getInputProps("expiresAfter")}
         />
-        <Button type="submit" color="teal.7">
+        <Button
+          type="submit"
+          color="teal.7"
+          disabled={!form.values.targetUrl.length || aliasAvailable === false}
+        >
           Shorten!
         </Button>
       </Stack>

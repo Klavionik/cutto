@@ -4,6 +4,8 @@ from rest_framework.generics import (
     ListAPIView,
     get_object_or_404,
 )
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from shortener.api.serializers import (
     LinkCreateSerializer,
@@ -34,3 +36,10 @@ class LinkListDestroyAPIView(DestroyAPIView, ListAPIView):
     def get_queryset(self):
         owner = self.kwargs["pk"]
         return Link.objects.filter(owner=owner)
+
+
+class AliasAvailabilityAPIView(APIView):
+    def get(self, request, alias):
+        if Link.objects.filter(alias=alias).exists():
+            return Response(status=409)
+        return Response()

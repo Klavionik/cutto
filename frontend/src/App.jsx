@@ -1,12 +1,11 @@
 import { AppShell, Navbar, NavLink, ThemeIcon, Title } from "@mantine/core"
-import { useEffect } from "react"
 import { IconHome, IconLayersLinked, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
-import { Link, Outlet } from "react-router-dom"
+import { Link, Outlet, useMatch } from "react-router-dom"
 import { createOwner } from "./api.js"
-import { ThemeProvider } from "./ThemeProvider"
-import { useLocalStorage } from "@mantine/hooks"
-import { useMatch } from "react-router-dom"
 import { OwnerContext } from "./OwnerContext.js"
+import { ThemeProvider } from "./ThemeProvider"
+import { useEffect } from "react"
+import { useLocalStorage } from "@mantine/hooks"
 
 export default function App() {
   const rootMatch = useMatch({ path: "/" })

@@ -44,3 +44,7 @@ export const listOwnerLinks = (owner) => {
 export const deleteOwnerLinks = (owner) => {
   return client.delete(`owner/${owner}/links/`)
 }
+
+export const getAliasAvailability = (alias) => {
+  return client.get(`alias-availablity/${alias}/`)
+}
