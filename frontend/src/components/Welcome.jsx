@@ -10,11 +10,21 @@ import {
   Title,
   TypographyStylesProvider,
 } from "@mantine/core"
-import { OwnerContext } from "../OwnerContext.js"
-import { useContext } from "react"
+import { useLocalStorage, useToggle } from "@mantine/hooks"
+import { useForm } from "@mantine/form"
+import validators from "../validators.js"
 
 export default function Welcome() {
-  const owner = useContext(OwnerContext)
+  const form = useForm({
+    initialValues: {
+      id: "",
+    },
+    validate: {
+      id: validators.uuid,
+    },
+  })
+  const [owner, setOwner] = useLocalStorage({ key: "owner", getInitialValueInEffect: false })
+  const [opened, toggleOpened] = useToggle()
 
   return (
     <Paper shadow="md" p="xl" pt={0} withBorder maw={600}>
@@ -44,26 +54,47 @@ export default function Welcome() {
             </Text>
             <br />
             <br />
-            <Popover width={300} position="top-start" withArrow shadow="md">
+            <Popover
+              width={300}
+              position="top-start"
+              withArrow
+              trapFocus
+              shadow="md"
+              opened={opened}
+              onChange={toggleOpened}
+            >
               <Popover.Target>
-                <Button color="red.6" variant="outline">
+                <Button color="red.6" variant="outline" onClick={() => toggleOpened()}>
                   Not your ID?
                 </Button>
               </Popover.Target>
               <Popover.Dropdown>
-                <Stack>
-                  <Text size={12}>
-                    Enter your previous ID and click&nbsp;
-                    <Text span weight="bold">
-                      Apply
+                <form
+                  onSubmit={form.onSubmit(() => {
+                    setOwner(form.values.id)
+                    toggleOpened()
+                  })}
+                >
+                  <Stack>
+                    <Text size={12}>
+                      Enter your previous ID and click&nbsp;
+                      <Text span weight="bold">
+                        Apply
+                      </Text>
+                      &nbsp;to reclaim access.
                     </Text>
-                    &nbsp;to reclaim access.
-                  </Text>
-                  <TextInput size="xs" />
-                  <Button size="xs" variant="filled" color="green">
-                    Apply
-                  </Button>
-                </Stack>
+                    <TextInput size="xs" {...form.getInputProps("id")} />
+                    <Button
+                      size="xs"
+                      style={{ alignSelf: "flex-start" }}
+                      variant="filled"
+                      color="green"
+                      type="submit"
+                    >
+                      Apply
+                    </Button>
+                  </Stack>
+                </form>
               </Popover.Dropdown>
             </Popover>
           </Text>

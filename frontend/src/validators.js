@@ -1,6 +1,7 @@
 import isEmpty from "validator/es/lib/isEmpty.js"
 import isLength from "validator/es/lib/isLength.js"
 import isURL from "validator/es/lib/isURL.js"
+import isUUID from "validator/es/lib/isUUID.js"
 
 const TIME_LEEWAY = 60 * 5 * 1000 // 5 minutes.
 
@@ -33,6 +34,11 @@ function minTime(value) {
   return value < minDatetime ? `Min. date: ${formatter.format(minDatetime)}` : null
 }
 
-const validators = { url, slug, password, minTime, isSlug }
+function uuid(value) {
+  console.log(value)
+  if (!isUUID(value, 4)) return "Invalid ID"
+}
+
+const validators = { url, uuid, slug, password, minTime, isSlug }
 
 export default validators
