@@ -7,14 +7,23 @@ import { SITE_URL } from "../config.js"
 import { useContext } from "react"
 import { useForm } from "@mantine/form"
 import { useState } from "react"
+import validators from "../validators.js"
 
 function NewLinkForm({ onSubmit }) {
+  const owner = useContext(OwnerContext)
   const form = useForm({
     initialValues: {
       targetUrl: "",
       alias: "",
       password: "",
       expiresAfter: null,
+      owner,
+    },
+    validate: {
+      targetUrl: validators.url,
+      alias: validators.slug,
+      password: validators.password,
+      expiresAfter: validators.minTime,
     },
   })
   const alias = form.values.alias || "~auto~"
@@ -22,7 +31,7 @@ function NewLinkForm({ onSubmit }) {
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
       <Stack>
-        <Text>
+        <Text truncate>
           Your link:&nbsp;
           <Text span weight="bold">
             {SITE_URL}/go/
@@ -53,6 +62,9 @@ function NewLinkForm({ onSubmit }) {
         <DateTimePicker
           label="Expires after"
           description="(Optional) Make the link expire after some time"
+          placeholder="Does not expire"
+          clearable
+          minDate={new Date()}
           {...form.getInputProps("expiresAfter")}
         />
         <Button type="submit" color="teal.7">
@@ -66,10 +78,9 @@ function NewLinkForm({ onSubmit }) {
 export default function NewLink() {
   const [created, setCreated] = useState(false)
   const [data, setData] = useState({})
-  const owner = useContext(OwnerContext)
 
   async function onSubmit(payload) {
-    const data = await createLink({ ...payload, owner })
+    const data = await createLink(payload)
     setData(data)
     setCreated(true)
   }
