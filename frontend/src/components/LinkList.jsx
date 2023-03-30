@@ -1,7 +1,9 @@
-import { Button, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
+import { ActionIcon, Button, Group, Modal, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
 import { deleteOwnerLinks, listOwnerLinks } from "../api.js"
-import { useFetcher, useLoaderData } from "react-router-dom"
+import { Form, useLoaderData } from "react-router-dom"
+import { IconChartBar } from "@tabler/icons-react"
 import { SITE_URL } from "../config.js"
+import { useDisclosure } from "@mantine/hooks"
 
 export async function loader({ params }) {
   return await listOwnerLinks(params.owner)
@@ -14,11 +16,11 @@ export async function action({ params }) {
 
 export default function LinkList() {
   const links = useLoaderData()
-  const fetcher = useFetcher()
   const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
     dateStyle: "medium",
     timeStyle: "short",
   })
+  const [opened, { open, close }] = useDisclosure(false)
 
   const rows = links.map((link) => {
     return (
@@ -33,7 +35,14 @@ export default function LinkList() {
             <Text truncate>{link.targetUrl}</Text>
           </a>
         </td>
-        <td>{link.clicksCount}</td>
+        <td>
+          <Group spacing={5}>
+            <span>{link.clicksCount}</span>
+            <ActionIcon onClick={open} variant="filled" size="1.15rem" color="blue.4">
+              <IconChartBar />
+            </ActionIcon>
+          </Group>
+        </td>
         <td>
           <Tooltip position="bottom-start" openDelay={300} label={link.password}>
             <span>{link.password ? "******" : "-"}</span>
@@ -46,12 +55,15 @@ export default function LinkList() {
 
   return (
     <Paper shadow="md" p="xl" withBorder mih={400} maw={1200}>
+      <Modal opened={opened} onClose={close} title="Clicks statistics">
+        {/* Modal content */}
+      </Modal>
       <Stack align="flex-start">
-        <fetcher.Form method="post">
+        <Form method="post">
           <Button type="submit" disabled={!links.length} color="red">
             Clear history
           </Button>
-        </fetcher.Form>
+        </Form>
         <Table verticalSpacing="sm">
           <thead>
             <tr>
