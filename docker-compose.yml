@@ -27,6 +27,7 @@ services:
       - ./backend:/app
     networks:
       - web
+      - worker
       - db
 
   worker:
@@ -41,6 +42,8 @@ services:
     networks:
       - worker
       - db
+    volumes:
+      - ./backend:/app
 
   broker:
     image: rabbitmq:3.8-alpine

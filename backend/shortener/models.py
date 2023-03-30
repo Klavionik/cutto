@@ -29,6 +29,8 @@ class Link(models.Model):
 
 class Click(models.Model):
     origin_ip = models.GenericIPAddressField()
+    country = models.CharField(max_length=100)
+    user_agent = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     link = models.ForeignKey(Link, related_name="clicks", on_delete=models.CASCADE)
 
