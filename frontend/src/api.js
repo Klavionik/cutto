@@ -48,3 +48,7 @@ export const deleteOwnerLinks = (owner) => {
 export const getAliasAvailability = (alias) => {
   return client.get(`alias-availablity/${alias}/`)
 }
+
+export const getLinkClicks = (owner, alias) => {
+  return client.get(`owner/${owner}/links/${alias}/clicks/`).json().then(adaptFromServer)
+}

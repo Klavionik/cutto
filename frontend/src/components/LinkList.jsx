@@ -1,9 +1,8 @@
-import { ActionIcon, Button, Group, Modal, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
+import { ActionIcon, Button, Group, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
 import { deleteOwnerLinks, listOwnerLinks } from "../api.js"
-import { Form, useLoaderData } from "react-router-dom"
+import { Form, Link, Outlet, useLoaderData } from "react-router-dom"
 import { IconChartBar } from "@tabler/icons-react"
 import { SITE_URL } from "../config.js"
-import { useDisclosure } from "@mantine/hooks"
 
 export async function loader({ params }) {
   return await listOwnerLinks(params.owner)
@@ -14,7 +13,7 @@ export async function action({ params }) {
   return null
 }
 
-function LinkTable({ links, dateFormatter, openModal }) {
+function LinkTable({ links, dateFormatter }) {
   const rows = links.map((link) => {
     return (
       <tr key={link.alias}>
@@ -35,8 +34,8 @@ function LinkTable({ links, dateFormatter, openModal }) {
           <Group spacing={5}>
             <span>{link.clicksCount}</span>
             <ActionIcon
-              // disabled={!link.clickCount}
-              onClick={openModal}
+              component={Link}
+              to={`link/${link.alias}/clicks`}
               variant="filled"
               size="1.15rem"
               color="blue.4"
@@ -78,30 +77,20 @@ export default function LinkList() {
     dateStyle: "short",
     timeStyle: "short",
   })
-  const [opened, { open, close }] = useDisclosure(false)
 
   return (
-    <Paper shadow="md" p="xl" withBorder mih={400} maw={1200}>
-      <Modal opened={opened} onClose={close} title="Clicks statistics">
-        <Table>
-          <thead>
-            <tr>
-              <th>Created</th>
-              <th>IP</th>
-              <th>Country</th>
-              <th>User Agent</th>
-            </tr>
-          </thead>
-        </Table>
-      </Modal>
-      <Stack align="flex-start">
-        <Form method="post">
-          <Button type="submit" disabled={!links.length} color="red">
-            Clear history
-          </Button>
-        </Form>
-        <LinkTable links={links} dateFormatter={dateFormatter} openModal={open} />
-      </Stack>
-    </Paper>
+    <>
+      <Outlet />
+      <Paper shadow="md" p="xl" withBorder mih={400} maw={1200}>
+        <Stack align="flex-start">
+          <Form method="post">
+            <Button type="submit" disabled={!links.length} color="red">
+              Clear history
+            </Button>
+          </Form>
+          <LinkTable links={links} dateFormatter={dateFormatter} />
+        </Stack>
+      </Paper>
+    </>
   )
 }

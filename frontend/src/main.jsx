@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { action as linksAction, loader as linksLoader } from "./components/LinkList.jsx"
 import App from "./App"
+import ClicksList from "./components/ClicksList.jsx"
 import Error from "./components/Error.jsx"
 import LinkList from "./components/LinkList.jsx"
 import LinkListWrapper from "./components/LinkListWrapper.jsx"
@@ -8,6 +9,7 @@ import NewLink from "./components/NewLink.jsx"
 import React from "react"
 import ReactDOM from "react-dom/client"
 import Welcome from "./components/Welcome.jsx"
+import { loader as clicksLoader } from "./components/ClicksList.jsx"
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,13 @@ const router = createBrowserRouter([
         loader: linksLoader,
         action: linksAction,
         errorElement: <Error />,
+        children: [
+          {
+            path: "link/:alias/clicks",
+            element: <ClicksList />,
+            loader: clicksLoader,
+          },
+        ],
       },
     ],
   },

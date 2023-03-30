@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from shortener.models import Link, Owner
+from shortener.models import Click, Link, Owner
 
 
 class OwnerSerializer(serializers.ModelSerializer):
@@ -25,3 +25,9 @@ class LinkListSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_clicks_count(obj: Link):
         return obj.clicks.count()
+
+
+class LinkClicksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Click
+        fields = "__all__"

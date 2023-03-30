@@ -8,11 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from shortener.api.serializers import (
+    LinkClicksSerializer,
     LinkCreateSerializer,
     LinkListSerializer,
     OwnerSerializer,
 )
-from shortener.models import Link, Owner
+from shortener.models import Click, Link, Owner
 
 
 class OwnerCreateAPIView(CreateAPIView):
@@ -43,3 +44,12 @@ class AliasAvailabilityAPIView(APIView):
         if Link.objects.filter(alias=alias).exists():
             return Response(status=409)
         return Response()
+
+
+class LinkClicksListAPIView(ListAPIView):
+    serializer_class = LinkClicksSerializer
+
+    def get_queryset(self):
+        owner = self.kwargs["owner"]
+        alias = self.kwargs["alias"]
+        return Click.objects.filter(link__alias=alias, link__owner=owner)

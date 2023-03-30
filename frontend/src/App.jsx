@@ -10,7 +10,7 @@ import { useLocalStorage } from "@mantine/hooks"
 export default function App() {
   const rootMatch = useMatch({ path: "/" })
   const newLinkPage = useMatch({ path: "/new" })
-  const linkListPage = useMatch({ path: "/list/:owner" })
+  const linkListPage = useMatch({ path: "/list/:owner*" })
   const [owner, setOwner] = useLocalStorage({ key: "owner", getInitialValueInEffect: false })
 
   useEffect(() => {
