@@ -16,6 +16,13 @@ export function ThemeProvider({ children }) {
           ".td-alias": { minWidth: "fit-content" },
           ".td-targetUrl": { maxWidth: 600 },
           td: { cursor: "default" },
+          ".no-link, .no-link:visited": {
+            color: "black",
+            textDecoration: "none",
+          },
+          ".logo": {
+            cursor: "default",
+          },
         }),
       }}
     >

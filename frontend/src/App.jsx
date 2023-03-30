@@ -1,5 +1,5 @@
-import { AppShell, Navbar, NavLink, ThemeIcon, Title } from "@mantine/core"
-import { IconHome, IconLayersLinked, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
+import { AppShell, Group, Image, Navbar, NavLink, Text, Title } from "@mantine/core"
+import { IconHome, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
 import { Link, Outlet, useMatch } from "react-router-dom"
 import { createOwner } from "./api.js"
 import { OwnerContext } from "./OwnerContext.js"
@@ -25,12 +25,22 @@ export default function App() {
         navbar={
           <Navbar p="xs" width={{ base: 300 }}>
             <Navbar.Section>
-              <Title>
-                URL Shortener
-                <ThemeIcon ml={10} color="teal">
-                  <IconLayersLinked size={24} />
-                </ThemeIcon>
-              </Title>
+              <Group>
+                <Image src="../logo.png" maw={60} />
+                <Title className="logo">
+                  Cutto!
+                  <Text span size={12}>
+                    <a
+                      className="no-link"
+                      target="_blank"
+                      href="https://jisho.org/search/%23kanji%20%E5%88%80"
+                      rel="noreferrer"
+                    >
+                      刀
+                    </a>
+                  </Text>
+                </Title>
+              </Group>
             </Navbar.Section>
             <Navbar.Section grow mt="md">
               <NavLink

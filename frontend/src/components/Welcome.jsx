@@ -29,7 +29,7 @@ export default function Welcome() {
   return (
     <Paper shadow="md" p="xl" pt={0} withBorder maw={600}>
       <TypographyStylesProvider>
-        <Title>Welcome!</Title>
+        <Title order={2}>Welcome!</Title>
         <Text>This little homemade shortener is capable of:</Text>
 
         <List>
