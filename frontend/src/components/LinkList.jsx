@@ -45,9 +45,13 @@ function LinkTable({ links, dateFormatter }) {
           </Group>
         </td>
         <td>
-          <Tooltip position="bottom-start" openDelay={300} label={link.password}>
-            <span>{link.password ? "******" : "-"}</span>
-          </Tooltip>
+          {link.password ? (
+            <Tooltip position="bottom-start" openDelay={300} label={link.password}>
+              <span>******</span>
+            </Tooltip>
+          ) : (
+            <span>-</span>
+          )}
         </td>
         <td>{link.expiresAfter ? dateFormatter.format(new Date(link.expiresAfter)) : "-"}</td>
       </tr>
