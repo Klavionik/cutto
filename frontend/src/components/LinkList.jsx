@@ -14,14 +14,7 @@ export async function action({ params }) {
   return null
 }
 
-export default function LinkList() {
-  const links = useLoaderData()
-  const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
-    dateStyle: "short",
-    timeStyle: "short",
-  })
-  const [opened, { open, close }] = useDisclosure(false)
-
+function LinkTable({ links, dateFormatter, openModal }) {
   const rows = links.map((link) => {
     return (
       <tr key={link.alias}>
@@ -41,7 +34,13 @@ export default function LinkList() {
         <td>
           <Group spacing={5}>
             <span>{link.clicksCount}</span>
-            <ActionIcon onClick={open} variant="filled" size="1.15rem" color="blue.4">
+            <ActionIcon
+              // disabled={!link.clickCount}
+              onClick={openModal}
+              variant="filled"
+              size="1.15rem"
+              color="blue.4"
+            >
               <IconChartBar />
             </ActionIcon>
           </Group>
@@ -57,9 +56,43 @@ export default function LinkList() {
   })
 
   return (
+    <Table verticalSpacing="sm">
+      <thead>
+        <tr>
+          <th>Created</th>
+          <th>Alias</th>
+          <th>URL</th>
+          <th>Clicks</th>
+          <th>Password</th>
+          <th>Expires</th>
+        </tr>
+      </thead>
+      <tbody>{rows}</tbody>
+    </Table>
+  )
+}
+
+export default function LinkList() {
+  const links = useLoaderData()
+  const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
+    dateStyle: "short",
+    timeStyle: "short",
+  })
+  const [opened, { open, close }] = useDisclosure(false)
+
+  return (
     <Paper shadow="md" p="xl" withBorder mih={400} maw={1200}>
       <Modal opened={opened} onClose={close} title="Clicks statistics">
-        {/* Modal content */}
+        <Table>
+          <thead>
+            <tr>
+              <th>Created</th>
+              <th>IP</th>
+              <th>Country</th>
+              <th>User Agent</th>
+            </tr>
+          </thead>
+        </Table>
       </Modal>
       <Stack align="flex-start">
         <Form method="post">
@@ -67,19 +100,7 @@ export default function LinkList() {
             Clear history
           </Button>
         </Form>
-        <Table verticalSpacing="sm">
-          <thead>
-            <tr>
-              <th>Created</th>
-              <th>Alias</th>
-              <th>URL</th>
-              <th>Clicks</th>
-              <th>Password</th>
-              <th>Expires</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
+        <LinkTable links={links} dateFormatter={dateFormatter} openModal={open} />
       </Stack>
     </Paper>
   )
