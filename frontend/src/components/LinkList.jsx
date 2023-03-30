@@ -85,8 +85,8 @@ export default function LinkList() {
   return (
     <>
       <Outlet />
-      <Paper shadow="md" p="xl" withBorder mih={400} maw={1200}>
-        <Stack align="flex-start">
+      <Paper shadow="md" p="xl" withBorder mih={500} maw={1200}>
+        <Stack>
           <Form method="post">
             <Button type="submit" disabled={!links.length} color="red">
               Clear history
