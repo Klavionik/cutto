@@ -17,7 +17,7 @@ export async function action({ params }) {
 export default function LinkList() {
   const links = useLoaderData()
   const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
-    dateStyle: "medium",
+    dateStyle: "short",
     timeStyle: "short",
   })
   const [opened, { open, close }] = useDisclosure(false)
@@ -25,6 +25,9 @@ export default function LinkList() {
   const rows = links.map((link) => {
     return (
       <tr key={link.alias}>
+        <td>
+          <Text>{dateFormatter.format(new Date(link.createdAt))}</Text>
+        </td>
         <td className="td-alias">
           <a href={`${SITE_URL}/go/${link.alias}`}>
             <Text>{link.alias}</Text>
@@ -67,6 +70,7 @@ export default function LinkList() {
         <Table verticalSpacing="sm">
           <thead>
             <tr>
+              <th>Created</th>
               <th>Alias</th>
               <th>URL</th>
               <th>Clicks</th>

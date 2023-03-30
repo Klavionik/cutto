@@ -20,7 +20,7 @@ class LinkListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ["target_url", "password", "expires_after", "alias", "clicks_count"]
+        fields = ["target_url", "password", "expires_after", "alias", "clicks_count", "created_at"]
 
     @staticmethod
     def get_clicks_count(obj: Link):
