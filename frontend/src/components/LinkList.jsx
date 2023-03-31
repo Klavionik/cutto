@@ -21,12 +21,12 @@ function LinkTable({ links, dateFormatter }) {
           <Text>{dateFormatter.format(new Date(link.createdAt))}</Text>
         </td>
         <td className="td-alias">
-          <a href={`${SITE_URL}/go/${link.alias}`}>
+          <a className="link" href={`${SITE_URL}/go/${link.alias}`}>
             <Text>{link.alias}</Text>
           </a>
         </td>
         <td className="td-targetUrl">
-          <a href={link.targetUrl}>
+          <a className="link" href={link.targetUrl}>
             <Text truncate>{link.targetUrl}</Text>
           </a>
         </td>

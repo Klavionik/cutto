@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { action as linksAction, loader as linksLoader } from "./components/LinkList.jsx"
+import About from "./components/About.jsx"
 import App from "./App"
 import ClicksList from "./components/ClicksList.jsx"
 import { loader as clicksLoader } from "./components/ClicksList.jsx"
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
             loader: clicksLoader,
           },
         ],
+      },
+      {
+        path: "about",
+        element: <About />,
       },
     ],
   },
