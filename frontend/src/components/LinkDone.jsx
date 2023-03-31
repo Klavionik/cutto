@@ -1,4 +1,4 @@
-import { ActionIcon, Alert, CopyButton, Group, Stack, Text, Title } from "@mantine/core"
+import { ActionIcon, Alert, Button, CopyButton, Group, Stack, Text, Title } from "@mantine/core"
 import { IconCheck, IconCopy } from "@tabler/icons-react"
 import { Link } from "react-router-dom"
 import { SITE_URL } from "../config.js"
@@ -22,7 +22,7 @@ function CopyURLButton({ value }) {
   )
 }
 
-export default function LinkDone({ data }) {
+export default function LinkDone({ data, addAnotherHandler }) {
   const fullLink = `${SITE_URL}/go/${data.alias}`
 
   return (
@@ -40,6 +40,9 @@ export default function LinkDone({ data }) {
         <Link to={`/list/${data.owner}`}>this page</Link> to access it from any other device. This
         bookmark is going to contain your unique ID.
       </Alert>
+      <Button onClick={addAnotherHandler} color="red.6" variant="outline">
+        Add another one
+      </Button>
     </Stack>
   )
 }

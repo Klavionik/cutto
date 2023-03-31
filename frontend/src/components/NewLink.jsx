@@ -133,9 +133,18 @@ export default function NewLink() {
     setCreated(true)
   }
 
+  function handleAddAnother() {
+    setData({})
+    setCreated(false)
+  }
+
   return (
     <Paper shadow="md" p="xl" withBorder maw={600}>
-      {created ? <LinkDone data={data} /> : <NewLinkForm onSubmit={onSubmit} />}
+      {created ? (
+        <LinkDone data={data} addAnotherHandler={handleAddAnother} />
+      ) : (
+        <NewLinkForm onSubmit={onSubmit} />
+      )}
     </Paper>
   )
 }

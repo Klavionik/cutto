@@ -78,7 +78,7 @@ export default function App() {
               <NavLink
                 component={Link}
                 to="/new"
-                label="Create a link"
+                label="Add new link"
                 p="md"
                 variant="filled"
                 color="teal.7"
