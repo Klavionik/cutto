@@ -35,7 +35,6 @@ function minTime(value) {
 }
 
 function uuid(value) {
-  console.log(value)
   if (!isUUID(value, 4)) return "Invalid ID"
 }
 

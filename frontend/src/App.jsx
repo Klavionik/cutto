@@ -1,7 +1,7 @@
 import { AppShell, Group, Image, Navbar, NavLink, Text, Title } from "@mantine/core"
+import { createOwner, getOwner } from "./api.js"
 import { IconHome, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
 import { Link, Outlet, useMatch } from "react-router-dom"
-import { createOwner } from "./api.js"
 import { OwnerContext } from "./OwnerContext.js"
 import { ThemeProvider } from "./ThemeProvider"
 import { useEffect } from "react"
@@ -14,9 +14,31 @@ export default function App() {
   const [owner, setOwner] = useLocalStorage({ key: "owner", getInitialValueInEffect: false })
 
   useEffect(() => {
-    if (owner) return
+    async function ensureOwnerExists() {
+      let ownerExists
 
-    createOwner().then(({ id }) => setOwner(id))
+      if (owner) {
+        try {
+          await getOwner(owner)
+          ownerExists = true
+        } catch (e) {
+          const status = e?.response?.status
+
+          if (status === 404) {
+            ownerExists = false
+          } else {
+            throw e
+          }
+        }
+      }
+
+      if (ownerExists) return
+
+      const { id: ownerId } = await createOwner()
+      setOwner(ownerId)
+    }
+
+    ensureOwnerExists()
   }, [])
 
   return (

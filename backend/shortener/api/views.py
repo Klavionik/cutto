@@ -2,6 +2,7 @@ from rest_framework.generics import (
     CreateAPIView,
     DestroyAPIView,
     ListAPIView,
+    RetrieveAPIView,
     get_object_or_404,
 )
 from rest_framework.response import Response
@@ -17,6 +18,11 @@ from shortener.models import Click, Link, Owner
 
 
 class OwnerCreateAPIView(CreateAPIView):
+    serializer_class = OwnerSerializer
+
+
+class OwnerRetrieveAPIView(RetrieveAPIView):
+    queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
 
 

@@ -52,3 +52,7 @@ export const getAliasAvailability = (alias) => {
 export const getLinkClicks = (owner, alias) => {
   return client.get(`owner/${owner}/links/${alias}/clicks/`).json().then(adaptFromServer)
 }
+
+export const getOwner = (owner) => {
+  return client.get(`owner/${owner}/`)
+}
