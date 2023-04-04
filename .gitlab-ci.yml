@@ -1,0 +1,39 @@
+stages:
+  - lint
+  - build
+
+Lint backend:
+  image: python:3.10.2-slim-bullseye
+  variables:
+    PRE_COMMIT_HOME: $CI_PROJECT_DIR/.cache/pre-commit
+    PIP_CACHE_DIR: $CI_PROJECT_DIR/.pip_cache
+  cache:
+    paths:
+      - $PRE_COMMIT_HOME
+      - $PIP_CACHE_DIR
+    key:
+      files:
+        - .pre-commit-config.yaml
+  stage: lint
+  before_script:
+    - pip install pre-commit==3.2.1
+  script:
+    - pre-commit run --hook-stage manual --all-files
+
+
+Lint frontend:
+  image: node:16.14.0-alpine
+  variables:
+    NPM_CONFIG_CACHE: $CI_PROJECT_DIR/.npm
+  cache:
+    paths:
+      - $NPM_CONFIG_CACHE
+    key:
+      files:
+        - package-lock.json
+  stage: lint
+  before_script:
+    - cd frontend
+    - npm ci
+  script:
+    - npm run lint
