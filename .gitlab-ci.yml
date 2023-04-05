@@ -55,9 +55,11 @@ frontend:lint:
       --cache-from=$IMAGE:latest
       --pull
       --push
-      --tag $IMAGE:$CI_COMMIT_SHA
+      --tag $IMAGE:$CI_COMMIT_TAG
+      --tag $IMAGE:latest
       $CI_PROJECT_DIR/$SERVICE
-
+  only:
+    - tags
 
 backend:build:
   extends: .build
