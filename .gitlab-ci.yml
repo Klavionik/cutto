@@ -38,22 +38,36 @@ frontend:lint:
     - npm run lint
 
 
-backend:build:
+.build:
   image: docker:23.0.3
   stage: build
-  needs: ["backend:lint"]
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE: $CI_REGISTRY_IMAGE/backend
+    IMAGE: $CI_REGISTRY_IMAGE/$SERVICE
   services:
     - docker:23.0.3-dind
   script:
     - echo -n $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker pull $IMAGE:latest || true
-    - docker build 
-      --progress plain 
-      --platform linux/arm64 
+    - docker build
+      --progress plain
+      --platform linux/arm64
       --cache-from=$IMAGE:latest
       --pull
-      --tag $IMAGE:$CI_COMMIT_SHA 
-      $CI_PROJECT_DIR/backend
+      --push
+      --tag $IMAGE:$CI_COMMIT_SHA
+      $CI_PROJECT_DIR/$SERVICE
+
+
+backend:build:
+  extends: .build
+  needs: ["backend:lint"]
+  variables:
+    SERVICE: backend
+
+
+frontend:build:
+  extends: .build
+  needs: ["frontend:lint"]
+  variables:
+    SERVICE: frontend
