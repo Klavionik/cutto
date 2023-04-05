@@ -44,7 +44,7 @@ backend:build:
   needs: ["backend:lint"]
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE: $CI_REGISTRY_IMAGE-backend
+    IMAGE: $CI_REGISTRY_IMAGE/backend
   services:
     - docker:23.0.3-dind
   script:
