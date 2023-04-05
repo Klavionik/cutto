@@ -41,6 +41,7 @@ Lint frontend:
 
 
 Build backend:
+  stage: build
   image: docker:23.0.3
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
