@@ -16,6 +16,7 @@ Lint backend:
         - .pre-commit-config.yaml
   stage: lint
   before_script:
+    - apt-get update && apt-get install -y git
     - pip install pre-commit==3.2.1
   script:
     - pre-commit run --hook-stage manual --all-files
