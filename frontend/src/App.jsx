@@ -40,6 +40,7 @@ export default function App() {
     }
 
     ensureOwnerExists()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <ThemeProvider>
