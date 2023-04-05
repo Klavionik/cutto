@@ -2,6 +2,7 @@ import { AppShell, Group, Image, Navbar, NavLink, Text, Title } from "@mantine/c
 import { createOwner, getOwner } from "./api.js"
 import { IconHome, IconInfoCircle, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
 import { Link, Outlet, useMatch } from "react-router-dom"
+import logo from "../logo.png"
 import { OwnerContext } from "./OwnerContext.js"
 import { ThemeProvider } from "./ThemeProvider"
 import { useEffect } from "react"
@@ -49,7 +50,7 @@ export default function App() {
           <Navbar p="xs" width={{ base: 300 }}>
             <Navbar.Section>
               <Group spacing="xs">
-                <Image src="../logo.png" maw={60} />
+                <Image src={logo} maw={60} />
                 <Title className="logo">
                   Cutto!
                   <Text span size={12}>
