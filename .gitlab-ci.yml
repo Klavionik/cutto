@@ -2,8 +2,9 @@ stages:
   - lint
   - build
 
-Lint backend:
+backend:lint:
   image: python:3.10.2-slim-bullseye
+  stage: lint
   variables:
     PRE_COMMIT_HOME: $CI_PROJECT_DIR/.cache/pre-commit
     PIP_CACHE_DIR: $CI_PROJECT_DIR/.pip_cache
@@ -14,16 +15,15 @@ Lint backend:
     key:
       files:
         - .pre-commit-config.yaml
-  stage: lint
-  before_script:
+  script:
     - apt-get update && apt-get install -y git
     - pip install pre-commit==3.2.1
-  script:
     - pre-commit run --hook-stage manual --all-files
 
 
-Lint frontend:
+frontend:lint:
   image: node:16.14.0-alpine
+  stage: lint
   variables:
     NPM_CONFIG_CACHE: $CI_PROJECT_DIR/.npm
   cache:
@@ -32,17 +32,16 @@ Lint frontend:
     key:
       files:
         - package-lock.json
-  stage: lint
-  before_script:
+  script:
     - cd frontend
     - npm ci
-  script:
     - npm run lint
 
 
-Build backend:
-  stage: build
+backend:build:
   image: docker:23.0.3
+  stage: build
+  needs: ["backend:lint"]
   variables:
     DOCKER_TLS_CERTDIR: "/certs"
     IMAGE: $CI_REGISTRY_IMAGE-backend
