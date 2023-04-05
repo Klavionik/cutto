@@ -31,27 +31,27 @@ tasks:
 
   pyshell:
     cmds:
-      - docker compose exec web python manage.py shell
+      - docker compose exec backend python manage.py shell
 
   shell:
     cmds:
-      - docker compose exec web bash
+      - docker compose exec backend bash
 
-  logs.web:
+  logs.backend:
     cmds:
-      - docker compose logs web
+      - docker compose logs backend
 
   makemigrations:
     cmds:
-      - docker compose exec web python manage.py makemigrations
+      - docker compose exec backend python manage.py makemigrations
 
   migrate:
     cmds:
-      - docker compose exec web python manage.py migrate
+      - docker compose exec backend python manage.py migrate
 
   createsu:
     cmds:
-      - docker compose exec web python manage.py createsuperuser
+      - docker compose exec backend python manage.py createsuperuser
 
   reload.caddy:
     cmds:

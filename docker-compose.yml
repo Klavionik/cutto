@@ -3,7 +3,7 @@ services:
     build:
       context: frontend
     depends_on:
-      - web
+      - backend
     ports:
       - "80:80"
       - "443:443"
@@ -13,9 +13,9 @@ services:
       - ./frontend/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
     networks:
-      - web
+      - backend
 
-  web:
+  backend:
     build:
       context: backend
     command:
@@ -34,7 +34,7 @@ services:
     volumes:
       - ./backend:/app
     networks:
-      - web
+      - backend
       - worker
       - db
 
@@ -88,6 +88,6 @@ volumes:
   caddy_data:
 
 networks:
-  web:
+  backend:
   db:
   worker:
