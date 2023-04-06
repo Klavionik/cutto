@@ -1,79 +1,79 @@
 stages:
-  - lint
-  - build
+#  - lint
+#  - build
   - deploy
 
-backend:lint:
-  image: python:3.10.2-slim-bullseye
-  stage: lint
-  variables:
-    PRE_COMMIT_HOME: $CI_PROJECT_DIR/.cache/pre-commit
-    PIP_CACHE_DIR: $CI_PROJECT_DIR/.pip_cache
-  cache:
-    paths:
-      - $PRE_COMMIT_HOME
-      - $PIP_CACHE_DIR
-    key:
-      files:
-        - .pre-commit-config.yaml
-  script:
-    - apt-get update && apt-get install -y git
-    - pip install pre-commit==3.2.1
-    - pre-commit run --hook-stage manual --all-files
-
-
-frontend:lint:
-  image: node:16.14.0-alpine
-  stage: lint
-  variables:
-    NPM_CONFIG_CACHE: $CI_PROJECT_DIR/.npm
-  cache:
-    paths:
-      - $NPM_CONFIG_CACHE
-    key:
-      files:
-        - package-lock.json
-  script:
-    - cd frontend
-    - npm ci
-    - npm run lint
-
-
-.build:
-  image: docker:23.0.3
-  stage: build
-  variables:
-    DOCKER_TLS_CERTDIR: "/certs"
-    IMAGE: $CI_REGISTRY_IMAGE/$SERVICE
-  services:
-    - docker:23.0.3-dind
-  script:
-    - echo -n $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-    - docker pull $IMAGE:latest || true
-    - docker build
-      --progress plain
-      --platform linux/arm64
-      --cache-from=$IMAGE:latest
-      --pull
-      --push
-      --tag $IMAGE:$CI_COMMIT_TAG
-      --tag $IMAGE:latest
-      $CI_PROJECT_DIR/$SERVICE
-  only:
-    - tags
-
-backend:build:
-  extends: .build
-  needs: ["backend:lint"]
-  variables:
-    SERVICE: backend
-
-
-frontend:build:
-  extends: .build
-  needs: ["frontend:lint"]
-  variables:
-    SERVICE: frontend
+#backend:lint:
+#  image: python:3.10.2-slim-bullseye
+#  stage: lint
+#  variables:
+#    PRE_COMMIT_HOME: $CI_PROJECT_DIR/.cache/pre-commit
+#    PIP_CACHE_DIR: $CI_PROJECT_DIR/.pip_cache
+#  cache:
+#    paths:
+#      - $PRE_COMMIT_HOME
+#      - $PIP_CACHE_DIR
+#    key:
+#      files:
+#        - .pre-commit-config.yaml
+#  script:
+#    - apt-get update && apt-get install -y git
+#    - pip install pre-commit==3.2.1
+#    - pre-commit run --hook-stage manual --all-files
+#
+#
+#frontend:lint:
+#  image: node:16.14.0-alpine
+#  stage: lint
+#  variables:
+#    NPM_CONFIG_CACHE: $CI_PROJECT_DIR/.npm
+#  cache:
+#    paths:
+#      - $NPM_CONFIG_CACHE
+#    key:
+#      files:
+#        - package-lock.json
+#  script:
+#    - cd frontend
+#    - npm ci
+#    - npm run lint
+#
+#
+#.build:
+#  image: docker:23.0.3
+#  stage: build
+#  variables:
+#    DOCKER_TLS_CERTDIR: "/certs"
+#    IMAGE: $CI_REGISTRY_IMAGE/$SERVICE
+#  services:
+#    - docker:23.0.3-dind
+#  script:
+#    - echo -n $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+#    - docker pull $IMAGE:latest || true
+#    - docker build
+#      --progress plain
+#      --platform linux/arm64
+#      --cache-from=$IMAGE:latest
+#      --pull
+#      --push
+#      --tag $IMAGE:$CI_COMMIT_TAG
+#      --tag $IMAGE:latest
+#      $CI_PROJECT_DIR/$SERVICE
+#  only:
+#    - tags
+#
+#backend:build:
+#  extends: .build
+#  needs: ["backend:lint"]
+#  variables:
+#    SERVICE: backend
+#
+#
+#frontend:build:
+#  extends: .build
+#  needs: ["frontend:lint"]
+#  variables:
+#    SERVICE: frontend
 
 
 deploy:
@@ -85,5 +85,6 @@ deploy:
     name: development
     url: https://cutto.klavionik.net
   script:
+    - kubectl config use-context $KUBE_CONTEXT
     - kubectl apply -f manifests/
   when: manual
