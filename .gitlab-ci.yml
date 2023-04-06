@@ -1,6 +1,7 @@
 stages:
   - lint
   - build
+  - deploy
 
 backend:lint:
   image: python:3.10.2-slim-bullseye
@@ -73,3 +74,16 @@ frontend:build:
   needs: ["frontend:lint"]
   variables:
     SERVICE: frontend
+
+
+deploy:
+  stage: deploy
+  image:
+    name: bitnami/kubectl:1.26
+    entrypoint: [""]
+  environment:
+    name: development
+    url: https://cutto.klavionik.net
+  script:
+    - kubectl apply -f manifests/
+  when: manual
