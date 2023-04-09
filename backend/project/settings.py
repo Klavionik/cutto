@@ -126,12 +126,12 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CSRF_TRUSTED_ORIGINS = ["https://" + env.str("HOST", "shortener.localhost")]
+CSRF_TRUSTED_ORIGINS = ["https://" + env.str("HOST", default="shortener.localhost")]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CORS_ALLOW_ALL_ORIGINS = env.bool("DEBUG", default=True)
 
-CELERY_BROKER_URL = "pyamqp://guest@broker:5672"
+CELERY_BROKER_URL = env.str("BROKER_URL", default="pyamqp://guest@broker:5672")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": []}
