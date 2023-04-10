@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: frontend
+  template:
+    metadata:
+      labels:
+        service: frontend
+    spec:
+      initContainers:
+        - name: wait-for-backend
+          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          imagePullPolicy: Always
+          args:
+            - "pod"
+            - "-lservice=backend"
+      containers:
+        - name: frontend
+          image: registry.gitlab.com/klavionik/cutto/frontend:v1.0.6
+          ports:
+            - containerPort: 80
+          env:
+            - name: CADDY_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: host
+                  name: config
+          volumeMounts:
+            - mountPath: /data
+              name: caddy
+              subPath: data
+            - mountPath: /config
+              name: caddy
+              subPath: config
+      volumes:
+        - name: caddy
+          persistentVolumeClaim:
+            claimName: caddy
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: caddy
+spec:
+  storageClassName: microk8s-hostpath
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+  selector:
+    service: frontend

@@ -87,5 +87,5 @@ deploy:
     url: https://cutto.klavionik.net
   script:
     - kubectl config use-context $KUBE_CONTEXT
-    - kubectl apply -f manifests/
+    - kubectl apply -k deploy/manifests/
   when: manual

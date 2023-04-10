@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: backend
+  template:
+    metadata:
+      labels:
+        service: backend
+    spec:
+      initContainers:
+        - name: wait-for-migration
+          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          imagePullPolicy: Always
+          args:
+            - "job"
+            - "-lservice=migrate"
+        - name: wait-for-broker
+          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          imagePullPolicy: Always
+          args:
+            - "pod"
+            - "-lservice=broker"
+      containers:
+          - name: backend
+            image: registry.gitlab.com/klavionik/cutto/backend:v1.0.6
+            ports:
+              - containerPort: 8000
+            env:
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    key: database_url
+                    name: secret
+              - name: BROKER_URL
+                valueFrom:
+                  secretKeyRef:
+                    key: broker_url
+                    name: secret
+              - name: SECRET_KEY
+                valueFrom:
+                  secretKeyRef:
+                    key: secret_key
+                    name: secret
+              - name: DEBUG
+                valueFrom:
+                  configMapKeyRef:
+                    key: debug
+                    name: config
+              - name: ALLOWED_HOSTS
+                valueFrom:
+                  configMapKeyRef:
+                    key: allowed_hosts
+                    name: config
+              - name: CSRF_TRUSTED_ORIGINS
+                valueFrom:
+                  configMapKeyRef:
+                    key: csrf_trusted_origins
+                    name: config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+  selector:
+    service: backend

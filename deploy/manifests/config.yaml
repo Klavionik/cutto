@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  csrf_trusted_origins: "https://cutto.klavionik.net"
+  debug: "false"
+  allowed_hosts: "cutto.klavionik.net"
+  host: ":80"
+  database_name: cutto
