@@ -1,4 +1,4 @@
-{$HOST} {
+{$CADDY_HOST:shortener.localhost} {
 	encode gzip
 
 	log {
