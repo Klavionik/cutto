@@ -27,7 +27,7 @@ spec:
             - "-lservice=broker"
       containers:
           - name: backend
-            image: registry.gitlab.com/klavionik/cutto/backend:v1.0.6
+            image: registry.gitlab.com/klavionik/cutto/backend:v1.0.7
             ports:
               - containerPort: 8000
             env:
