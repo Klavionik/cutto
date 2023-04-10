@@ -50,6 +50,7 @@ frontend:lint:
   script:
     - echo -n $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker pull $IMAGE:latest || true
+    - docker buildx create --use
     - docker build
       --progress plain
       --platform linux/arm64,linux/amd64
