@@ -67,6 +67,12 @@ frontend:lint:
 backend:build:
   extends: .build
   needs: ["backend:lint"]
+  before_script:
+      # Work around libc-bin segmentation fault by installing the newer QEMU.
+      # https://github.com/docker/buildx/issues/314#issuecomment-1043156006
+    - docker pull tonistiigi/binfmt:qemu-v7.0.0
+    - docker run --privileged --rm tonistiigi/binfmt --uninstall qemu-*
+    - docker run --privileged --rm tonistiigi/binfmt --install arm64
   variables:
     SERVICE: backend
 
