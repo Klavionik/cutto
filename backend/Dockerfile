@@ -16,4 +16,3 @@ RUN groupadd $USER --gid $UID
 RUN useradd $USER --uid $UID --gid $UID --no-create-home
 USER app:app
 EXPOSE 8000
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "project.wsgi:application"]

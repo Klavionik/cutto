@@ -19,13 +19,11 @@ services:
     build:
       context: backend
     command:
-      - "gunicorn"
-      - "--reload"
-      - "--bind"
+      - "python"
+      - "manage.py"
+      - "runserver"
       - "0.0.0.0:8000"
-      - "--workers"
-      - "2"
-      - "project.wsgi:application"
+      - "--nostatic"
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -46,7 +44,14 @@ services:
         condition: service_started
       migrate:
         condition: service_completed_successfully
-    command: ["python", "-m", "celery", "--app", "project", "worker", "--beat", "--scheduler", "django"]
+    command:
+      - "python"
+      - "-m"
+      - "celery"
+      - "--app"
+      - "project"
+      - "worker"
+      - "--beat"
     networks:
       - worker
       - db

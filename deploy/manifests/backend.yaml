@@ -28,6 +28,15 @@ spec:
       containers:
           - name: backend
             image: registry.gitlab.com/klavionik/cutto/backend:v1.0.10
+            command:
+              - "gunicorn"
+              - "--bind"
+              - "0.0.0.0:8000"
+              - "--workers"
+              - "3"
+              - "--capture-output"
+              - "--access-logfile"
+              - "-"
             ports:
               - containerPort: 8000
             env:
