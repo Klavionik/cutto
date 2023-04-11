@@ -12,7 +12,7 @@ spec:
       initContainers:
         - name: wait-for-db
           image: ghcr.io/groundnuty/k8s-wait-for:v1.6
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args:
             - "pod"
             - "-lservice=database"

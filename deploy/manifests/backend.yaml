@@ -15,13 +15,13 @@ spec:
       initContainers:
         - name: wait-for-migration
           image: ghcr.io/groundnuty/k8s-wait-for:v1.6
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args:
             - "job"
             - "-lservice=migrate"
         - name: wait-for-broker
           image: ghcr.io/groundnuty/k8s-wait-for:v1.6
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           args:
             - "pod"
             - "-lservice=broker"
