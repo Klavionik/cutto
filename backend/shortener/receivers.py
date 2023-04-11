@@ -10,7 +10,7 @@ from shortener.tasks import query_geoip
 def register_click(sender, link: Link, request, **_kwargs):
     click = Click.objects.create(
         link=link,
-        origin_ip=request.META["REMOTE_ADDR"],
+        origin_ip=request.META["HTTP_X_FORWARDED_FOR"][0],
         user_agent=request.META["HTTP_USER_AGENT"],
     )
     query_geoip.delay(click.id)
