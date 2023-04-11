@@ -55,6 +55,7 @@ frontend:lint:
       --progress plain
       --platform linux/arm64,linux/amd64
       --cache-from $IMAGE:latest
+      --cache-to type=inline
       --pull
       --push
       --tag $IMAGE:$CI_COMMIT_TAG
