@@ -4,7 +4,7 @@ metadata:
   name: cutto-ingress
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    cert-manager.io/cluster-issuer: lets-encrypt
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   tls:
     - hosts:
