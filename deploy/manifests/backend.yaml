@@ -37,6 +37,7 @@ spec:
               - "--capture-output"
               - "--access-logfile"
               - "-"
+              - "project.wsgi:application"
             ports:
               - containerPort: 8000
             env:
