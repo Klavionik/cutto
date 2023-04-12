@@ -55,4 +55,3 @@ spec:
                   key: csrf_trusted_origins
                   name: config
       restartPolicy: Never
-  ttlSecondsAfterFinished: 30
