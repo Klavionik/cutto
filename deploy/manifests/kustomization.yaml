@@ -12,3 +12,9 @@ resources:
   - ingress.yaml
   - sealed-secret.yaml
   - config.yaml
+images:
+  - name: registry.gitlab.com/klavionik/cutto/backend
+    newTag: v1.0.11
+  - name: registry.gitlab.com/klavionik/cutto/frontend
+    newTag: v1.0.11
+
