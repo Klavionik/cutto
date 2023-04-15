@@ -1,9 +1,10 @@
-import { Paper, Text, Title } from "@mantine/core"
+import { Text, Title } from "@mantine/core"
+import PageCard from "./PageCard.jsx"
 
 export default function About() {
   return (
-    <Paper shadow="md" p="xl" pt={0} withBorder maw={600}>
-      <Title order={2} mt="xl" mb="xs">
+    <PageCard>
+      <Title order={2} mb="xs">
         About the project
       </Title>
       <Text>
@@ -24,6 +25,6 @@ export default function About() {
           Mantine.
         </a>
       </Text>
-    </Paper>
+    </PageCard>
   )
 }

@@ -1,6 +1,7 @@
-import { Alert, Button, List, Paper, Popover, Stack, Text, TextInput, Title } from "@mantine/core"
+import { Alert, Button, List, Popover, Stack, Text, TextInput, Title } from "@mantine/core"
 import { useLocalStorage, useToggle } from "@mantine/hooks"
 import { getOwner } from "../api.js"
+import PageCard from "./PageCard.jsx"
 import { useForm } from "@mantine/form"
 import validators from "../validators.js"
 
@@ -32,8 +33,8 @@ export default function Welcome() {
   }
 
   return (
-    <Paper shadow="md" p="xl" pt={0} withBorder maw={600}>
-      <Title order={2} mt="xl" mb="xs">
+    <PageCard>
+      <Title order={2} mb="xs">
         Welcome!
       </Title>
       <Text>This little homemade shortener is capable of:</Text>
@@ -100,6 +101,6 @@ export default function Welcome() {
           </Popover>
         </Text>
       </Alert>
-    </Paper>
+    </PageCard>
   )
 }

@@ -59,6 +59,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <AppShell
+        padding={isMobile ? 0 : "md"}
         header={
           isMobile ? (
             <AppHeader burgerOpened={burgerOpened} onBurgerClick={toggleBurgerMenu} />

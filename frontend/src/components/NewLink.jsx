@@ -1,4 +1,4 @@
-import { Button, Paper, PasswordInput, Stack, Text, TextInput, Tooltip } from "@mantine/core"
+import { Button, PasswordInput, Stack, Text, TextInput, Tooltip } from "@mantine/core"
 import { createLink, getAliasAvailability } from "../api.js"
 import { IconAlertCircleFilled, IconCircleCheckFilled } from "@tabler/icons-react"
 import { useContext, useEffect, useState } from "react"
@@ -6,6 +6,7 @@ import { useDebouncedValue, useFocusTrap } from "@mantine/hooks"
 import { DateTimePicker } from "@mantine/dates"
 import LinkDone from "./LinkDone.jsx"
 import { OwnerContext } from "../OwnerContext.js"
+import PageCard from "./PageCard.jsx"
 import { SITE_URL } from "../config.js"
 import { useForm } from "@mantine/form"
 import validators from "../validators.js"
@@ -139,12 +140,12 @@ export default function NewLink() {
   }
 
   return (
-    <Paper shadow="md" p="xl" withBorder maw={600}>
+    <PageCard>
       {created ? (
         <LinkDone data={data} addAnotherHandler={handleAddAnother} />
       ) : (
         <NewLinkForm onSubmit={onSubmit} />
       )}
-    </Paper>
+    </PageCard>
   )
 }
