@@ -1,11 +1,13 @@
-import { AppShell, Group, Image, Navbar, NavLink, Text, Title } from "@mantine/core"
+import { AppShell, Navbar, NavLink } from "@mantine/core"
 import { createOwner, getOwner } from "./api.js"
 import { IconHome, IconInfoCircle, IconList, IconSquareRoundedPlus } from "@tabler/icons-react"
-import { Link, Outlet, useMatch } from "react-router-dom"
-import logo from "../logo.png"
+import { Link, Outlet, useLocation, useMatch } from "react-router-dom"
+import { useEffect, useState } from "react"
+import AppHeader from "./components/AppHeader.jsx"
+import AppLogo from "./components/AppLogo.jsx"
 import { OwnerContext } from "./OwnerContext.js"
 import { ThemeProvider } from "./ThemeProvider"
-import { useEffect } from "react"
+import { useIsMobile } from "./utils.js"
 import { useLocalStorage } from "@mantine/hooks"
 
 export default function App() {
@@ -14,6 +16,17 @@ export default function App() {
   const linkListPage = useMatch({ path: "/list/:owner*" })
   const aboutPage = useMatch({ path: "/about" })
   const [owner, setOwner] = useLocalStorage({ key: "owner", getInitialValueInEffect: false })
+  const [burgerOpened, setBurgerOpened] = useState(false)
+  const isMobile = useIsMobile()
+  const location = useLocation()
+
+  function toggleBurgerMenu() {
+    setBurgerOpened((o) => !o)
+  }
+
+  useEffect(() => {
+    setBurgerOpened(false)
+  }, [location])
 
   useEffect(() => {
     async function ensureOwnerExists() {
@@ -46,26 +59,15 @@ export default function App() {
   return (
     <ThemeProvider>
       <AppShell
+        header={
+          isMobile ? (
+            <AppHeader burgerOpened={burgerOpened} onBurgerClick={toggleBurgerMenu} />
+          ) : null
+        }
+        navbarOffsetBreakpoint="sm"
         navbar={
-          <Navbar p="xs" width={{ base: 300 }}>
-            <Navbar.Section>
-              <Group spacing="xs">
-                <Image src={logo} maw={60} />
-                <Title className="logo">
-                  Cutto!
-                  <Text span size={12}>
-                    <a
-                      className="no-link"
-                      target="_blank"
-                      href="https://jisho.org/search/%23kanji%20%E5%88%80"
-                      rel="noreferrer"
-                    >
-                      刀
-                    </a>
-                  </Text>
-                </Title>
-              </Group>
-            </Navbar.Section>
+          <Navbar p="xs" width={{ base: 300 }} hiddenBreakpoint="sm" hidden={!burgerOpened}>
+            <Navbar.Section>{isMobile ? null : <AppLogo />}</Navbar.Section>
             <Navbar.Section grow mt="md">
               <NavLink
                 component={Link}
@@ -89,7 +91,7 @@ export default function App() {
               />
               <NavLink
                 component={Link}
-                to="/list"
+                to={`/list/${owner}`}
                 active={Boolean(linkListPage)}
                 label="Link history"
                 p="md"
