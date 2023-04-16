@@ -1,16 +1,21 @@
-import { Modal, Table } from "@mantine/core"
+import { Modal, Paper, Stack, Table } from "@mantine/core"
 import { useLoaderData, useNavigate } from "react-router-dom"
 import { getLinkClicks } from "../api.js"
+import { useIsTablet } from "../utils.js"
 
 export async function loader({ params }) {
   return await getLinkClicks(params.owner, params.alias)
 }
 
-function ClicksTable({ clicks }) {
-  const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
-    dateStyle: "short",
-    timeStyle: "short",
-  })
+function DateCell({ date, dateFormatter }) {
+  return dateFormatter.format(new Date(date))
+}
+
+function CountryCell({ country }) {
+  return country || "Unknown"
+}
+
+function ClicksTable({ clicks, dateFormatter }) {
   return (
     <Table verticalSpacing="sm">
       <thead>
@@ -25,9 +30,13 @@ function ClicksTable({ clicks }) {
         {clicks.map((item) => {
           return (
             <tr key={item.id}>
-              <td>{dateFormatter.format(new Date(item.createdAt))}</td>
+              <td>
+                <DateCell date={item.createdAt} dateFormatter={dateFormatter} />
+              </td>
               <td>{item.originIp}</td>
-              <td>{item.country || "Unknown"}</td>
+              <td>
+                <CountryCell country={item.country} />
+              </td>
               <td style={{ maxWidth: 250 }}>{item.userAgent}</td>
             </tr>
           )
@@ -37,14 +46,65 @@ function ClicksTable({ clicks }) {
   )
 }
 
+function MobileClicksTable({ clicks, dateFormatter }) {
+  return clicks.map((item) => {
+    return (
+      <Paper shadow="xs" p="xs" key={item.id}>
+        <Table>
+          <tbody>
+            <tr>
+              <th>Created</th>
+              <td>
+                <DateCell date={item.createdAt} dateFormatter={dateFormatter} />
+              </td>
+            </tr>
+            <tr>
+              <th>IP</th>
+              <td>{item.originIp}</td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td>
+                <CountryCell country={item.country} />
+              </td>
+            </tr>
+            <tr>
+              <th>User Agent</th>
+              <td style={{ maxWidth: 250 }}>{item.userAgent}</td>
+            </tr>
+          </tbody>
+        </Table>
+      </Paper>
+    )
+  })
+}
+
 export default function ClicksList() {
   const data = useLoaderData()
   const navigate = useNavigate()
   const toLinkList = () => navigate("..")
+  const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
+    dateStyle: "short",
+    timeStyle: "short",
+  })
+  const isTablet = useIsTablet()
 
   return (
-    <Modal opened={true} size="xl" onClose={toLinkList} title="Clicks statistics">
-      <ClicksTable clicks={data} />
+    <Modal
+      opened={true}
+      size="xl"
+      padding="xs"
+      fullScreen={isTablet}
+      onClose={toLinkList}
+      title="Clicks statistics"
+    >
+      {isTablet ? (
+        <Stack>
+          <MobileClicksTable clicks={data} dateFormatter={dateFormatter} />
+        </Stack>
+      ) : (
+        <ClicksTable clicks={data} dateFormatter={dateFormatter} />
+      )}
     </Modal>
   )
 }

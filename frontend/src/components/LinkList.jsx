@@ -113,8 +113,8 @@ function LinkTable({ links, dateFormatter }) {
 function MobileLinkTable({ links, dateFormatter }) {
   return links.map((link) => {
     return (
-      <Paper shadow="xs" p="xs">
-        <Table key={link.alias} sx={{ th: { width: 100 }, tableLayout: "fixed" }}>
+      <Paper key={link.alias} shadow="xs" p="xs">
+        <Table sx={{ th: { width: 100 }, tableLayout: "fixed" }}>
           <tbody>
             <tr>
               <th>Created</th>
