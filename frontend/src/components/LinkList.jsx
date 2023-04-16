@@ -1,10 +1,10 @@
-import { ActionIcon, Button, Group, Stack, Table, Text, Tooltip } from "@mantine/core"
+import { ActionIcon, Button, Group, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
 import { deleteOwnerLinks, listOwnerLinks } from "../api.js"
 import { Form, Link, Outlet, useLoaderData } from "react-router-dom"
 import { IconChartBar } from "@tabler/icons-react"
 import PageCard from "./PageCard.jsx"
 import { SITE_URL } from "../config.js"
-import { useIsMobile } from "../utils.js"
+import { useIsTablet } from "../utils.js"
 
 export async function loader({ params }) {
   return await listOwnerLinks(params.owner)
@@ -15,47 +15,80 @@ export async function action({ params }) {
   return null
 }
 
+function PasswordCell({ password }) {
+  return password ? (
+    <Tooltip
+      position="bottom-start"
+      events={{ hover: true, touch: true, focus: false }}
+      openDelay={300}
+      label={password}
+    >
+      <span>******</span>
+    </Tooltip>
+  ) : (
+    <span>-</span>
+  )
+}
+
+function ClicksCell({ clicksCount, linkAlias }) {
+  return (
+    <Group spacing={5}>
+      <span>{clicksCount}</span>
+      <ActionIcon
+        component={Link}
+        to={`link/${linkAlias}/clicks`}
+        variant="filled"
+        size="1.15rem"
+        color="blue.4"
+      >
+        <IconChartBar />
+      </ActionIcon>
+    </Group>
+  )
+}
+
+function URLCell({ targetUrl }) {
+  return (
+    <a className="link" href={targetUrl}>
+      <Text>{targetUrl}</Text>
+    </a>
+  )
+}
+
+function AliasCell({ alias }) {
+  return (
+    <a className="link" href={`${SITE_URL}/go/${alias}`}>
+      {alias}
+    </a>
+  )
+}
+
+function DateCell({ date, dateFormatter }) {
+  return date ? dateFormatter.format(new Date(date)) : "-"
+}
+
 function LinkTable({ links, dateFormatter }) {
   const rows = links.map((link) => {
     return (
       <tr key={link.alias}>
         <td>
-          <Text>{dateFormatter.format(new Date(link.createdAt))}</Text>
+          <DateCell date={link.createdAt} dateFormatter={dateFormatter} />
         </td>
         <td className="td-alias">
-          <a className="link" href={`${SITE_URL}/go/${link.alias}`}>
-            <Text>{link.alias}</Text>
-          </a>
+          <AliasCell alias={link.alias} />
         </td>
         <td className="td-targetUrl">
-          <a className="link" href={link.targetUrl}>
-            <Text truncate>{link.targetUrl}</Text>
-          </a>
+          <URLCell targetUrl={link.targetUrl} />
         </td>
         <td>
-          <Group spacing={5}>
-            <span>{link.clicksCount}</span>
-            <ActionIcon
-              component={Link}
-              to={`link/${link.alias}/clicks`}
-              variant="filled"
-              size="1.15rem"
-              color="blue.4"
-            >
-              <IconChartBar />
-            </ActionIcon>
-          </Group>
+          <ClicksCell clicksCount={link.clicksCount} linkAlias={link.alias} />
         </td>
         <td>
-          {link.password ? (
-            <Tooltip position="bottom-start" openDelay={300} label={link.password}>
-              <span>******</span>
-            </Tooltip>
-          ) : (
-            <span>-</span>
-          )}
+          <PasswordCell password={link.password} />
         </td>
-        <td>{link.expiresAfter ? dateFormatter.format(new Date(link.expiresAfter)) : "-"}</td>
+        <td>
+          <DateCell date={link.expiresAfter} dateFormatter={dateFormatter} />
+        </td>
       </tr>
     )
   })
@@ -77,21 +110,70 @@ function LinkTable({ links, dateFormatter }) {
   )
 }
 
+function MobileLinkTable({ links, dateFormatter }) {
+  return links.map((link) => {
+    return (
+      <Paper shadow="xs" p="xs">
+        <Table key={link.alias} sx={{ th: { width: 100 }, tableLayout: "fixed" }}>
+          <tbody>
+            <tr>
+              <th>Created</th>
+              <td>
+                <DateCell date={link.createdAt} dateFormatter={dateFormatter} />
+              </td>
+            </tr>
+            <tr>
+              <th>Alias</th>
+              <td>
+                <AliasCell alias={link.alias} />
+              </td>
+            </tr>
+            <tr>
+              <th>URL</th>
+              <td>
+                <URLCell targetUrl={link.targetUrl} />
+              </td>
+            </tr>
+            <tr>
+              <th>Clicks</th>
+              <td>
+                <ClicksCell clicksCount={link.clicksCount} linkAlias={link.alias} />
+              </td>
+            </tr>
+            <tr>
+              <th>Password</th>
+              <td>
+                <PasswordCell password={link.password} />
+              </td>
+            </tr>
+            <tr>
+              <th>Expires</th>
+              <td>
+                <DateCell date={link.expiresAfter} dateFormatter={dateFormatter} />
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </Paper>
+    )
+  })
+}
+
 export default function LinkList() {
   const links = useLoaderData()
   const dateFormatter = new Intl.DateTimeFormat(navigator.language, {
     dateStyle: "short",
     timeStyle: "short",
   })
-  const isMobile = useIsMobile()
+  const isTablet = useIsTablet()
 
   return (
     <>
       <Outlet />
       <PageCard
-        style={{ overflowX: "auto" }}
-        maw={isMobile ? "initial" : 1200}
-        mih={isMobile ? "initial" : 500}
+        p={isTablet ? "xs" : "xl"}
+        maw={isTablet ? "initial" : 1200}
+        mih={isTablet ? "initial" : 500}
       >
         <Stack>
           <Form method="post">
@@ -99,7 +181,11 @@ export default function LinkList() {
               Clear history
             </Button>
           </Form>
-          <LinkTable links={links} dateFormatter={dateFormatter} />
+          {isTablet ? (
+            <MobileLinkTable links={links} dateFormatter={dateFormatter} />
+          ) : (
+            <LinkTable links={links} dateFormatter={dateFormatter} />
+          )}
         </Stack>
       </PageCard>
     </>

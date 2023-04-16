@@ -5,3 +5,8 @@ export function useIsMobile() {
   const { breakpoints } = useMantineTheme()
   return useMediaQuery(`(max-width: ${breakpoints.sm})`)
 }
+
+export function useIsTablet() {
+  const { breakpoints } = useMantineTheme()
+  return useMediaQuery(`(max-width: ${breakpoints.md})`)
+}
