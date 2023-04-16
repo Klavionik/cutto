@@ -42,6 +42,11 @@ spec:
             - --scheduler
             - django
           env:
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  key: sentry_dsn
+                  name: secret
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
