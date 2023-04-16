@@ -55,6 +55,7 @@ frontend:lint:
     - echo -n $CI_REGISTRY_PASSWORD | docker login --username $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
     - docker pull $IMAGE:latest || true
     - docker context create ci && docker buildx create ci --use
+    # "--provenance false" fixes "Digest: Not applicable." GitLab CR message.
     - docker buildx build
       --progress plain
       --platform linux/arm64,linux/amd64
@@ -64,7 +65,6 @@ frontend:lint:
       --push
       --tag $IMAGE:$CI_COMMIT_TAG
       --tag $IMAGE:latest
-      # Fix "Digest: Not applicable." GitLab CR message.
       --provenance false
       $CI_PROJECT_DIR/$SERVICE
   only:
