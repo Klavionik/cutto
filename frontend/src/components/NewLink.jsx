@@ -73,52 +73,56 @@ function NewLinkForm({ onSubmit }) {
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
       <Stack>
-        <Text truncate>
-          Your link:&nbsp;
-          <Text span weight="bold">
+        <Stack spacing={0}>
+          <Text c="dimmed" fz="xs" span>
+            Your link
+          </Text>
+          <Text span weight="bold" size="sm" truncate>
             {SITE_URL}/go/
             <Text span color="blue.6">
               {alias}
             </Text>
           </Text>
-        </Text>
-        <TextInput
-          ref={focusTrapRef}
-          placeholder="https://example.com/extralongurl?with=stuff"
-          label="Target URL"
-          description="Where the link should lead?"
-          withAsterisk
-          {...form.getInputProps("targetUrl")}
-        />
-        <TextInput
-          placeholder="myshinylink"
-          label="Link alias"
-          description="(Optional) Allowed characters: -, a-z, A-Z, 0-9, _"
-          rightSection={resolveAliasIcon()}
-          {...aliasProps}
-          onKeyDown={onAliasKeyDown}
-        />
-        <PasswordInput
-          placeholder="qwerty is a good one"
-          label="Password protection"
-          description="(Optional) Set a password for the link"
-          {...form.getInputProps("password")}
-        />
-        <DateTimePicker
-          label="Expires after"
-          description="(Optional) Make the link expire after some time"
-          placeholder="Does not expire"
-          clearable
-          minDate={new Date()}
-          {...form.getInputProps("expiresAfter")}
-        />
-        <Button
-          type="submit"
-          color="teal.7"
-          disabled={!form.values.targetUrl.length || aliasAvailable === false}
-        >
-          Shorten!
-        </Button>
+        </Stack>
+        <Stack>
+          <TextInput
+            ref={focusTrapRef}
+            placeholder="https://example.com/extralongurl?with=stuff"
+            label="Target URL"
+            description="Where the link should lead?"
+            withAsterisk
+            {...form.getInputProps("targetUrl")}
+          />
+          <TextInput
+            placeholder="myshinylink"
+            label="Link alias"
+            description="(Optional) Allowed characters: -, a-z, A-Z, 0-9, _"
+            rightSection={resolveAliasIcon()}
+            {...aliasProps}
+            onKeyDown={onAliasKeyDown}
+          />
+          <PasswordInput
+            placeholder="qwerty is a good one"
+            label="Password protection"
+            description="(Optional) Set a password for the link"
+            {...form.getInputProps("password")}
+          />
+          <DateTimePicker
+            label="Expires after"
+            description="(Optional) Make the link expire after some time"
+            placeholder="Does not expire"
+            clearable
+            minDate={new Date()}
+            {...form.getInputProps("expiresAfter")}
+          />
+          <Button
+            type="submit"
+            color="teal.7"
+            disabled={!form.values.targetUrl.length || aliasAvailable === false}
+          >
+            Shorten!
+          </Button>
+        </Stack>
       </Stack>
     </form>
   )
