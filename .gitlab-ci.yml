@@ -64,6 +64,8 @@ frontend:lint:
       --push
       --tag $IMAGE:$CI_COMMIT_TAG
       --tag $IMAGE:latest
+      # Fix "Digest: Not applicable." GitLab CR message.
+      --provenance false
       $CI_PROJECT_DIR/$SERVICE
   only:
     - tags
