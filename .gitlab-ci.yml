@@ -96,5 +96,6 @@ deploy:
     url: https://cutto.klavionik.net
   script:
     - kubectl config use-context $KUBE_CONTEXT
+    - kubect -n cutto delete job/migrate || true
     - kubectl apply -k deploy/manifests/
   when: manual
