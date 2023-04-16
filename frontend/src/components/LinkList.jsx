@@ -1,8 +1,10 @@
-import { ActionIcon, Button, Group, Paper, Stack, Table, Text, Tooltip } from "@mantine/core"
+import { ActionIcon, Button, Group, Stack, Table, Text, Tooltip } from "@mantine/core"
 import { deleteOwnerLinks, listOwnerLinks } from "../api.js"
 import { Form, Link, Outlet, useLoaderData } from "react-router-dom"
 import { IconChartBar } from "@tabler/icons-react"
+import PageCard from "./PageCard.jsx"
 import { SITE_URL } from "../config.js"
+import { useIsMobile } from "../utils.js"
 
 export async function loader({ params }) {
   return await listOwnerLinks(params.owner)
@@ -81,11 +83,16 @@ export default function LinkList() {
     dateStyle: "short",
     timeStyle: "short",
   })
+  const isMobile = useIsMobile()
 
   return (
     <>
       <Outlet />
-      <Paper shadow="md" p="xl" withBorder mih={500} maw={1200}>
+      <PageCard
+        style={{ overflowX: "auto" }}
+        maw={isMobile ? "initial" : 1200}
+        mih={isMobile ? "initial" : 500}
+      >
         <Stack>
           <Form method="post">
             <Button type="submit" disabled={!links.length} color="red">
@@ -94,7 +101,7 @@ export default function LinkList() {
           </Form>
           <LinkTable links={links} dateFormatter={dateFormatter} />
         </Stack>
-      </Paper>
+      </PageCard>
     </>
   )
 }
