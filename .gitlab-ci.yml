@@ -20,7 +20,9 @@ backend:lint:
     - apt-get update && apt-get install -y git
     - pip install pre-commit==3.2.1
     - pre-commit run --hook-stage manual --all-files
-
+  only:
+    changes:
+      - "backend/**/*.py"
 
 frontend:lint:
   image: node:16.14.0-alpine
@@ -37,7 +39,9 @@ frontend:lint:
     - cd frontend
     - npm ci
     - npm run lint
-
+  only:
+    changes:
+      - "frontend/**/*.{js,jsx}"
 
 .build:
   image: docker:23.0.3
@@ -76,13 +80,11 @@ backend:build:
   variables:
     SERVICE: backend
 
-
 frontend:build:
   extends: .build
   needs: ["frontend:lint"]
   variables:
     SERVICE: frontend
-
 
 deploy:
   stage: deploy
