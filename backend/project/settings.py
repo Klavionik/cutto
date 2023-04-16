@@ -135,3 +135,4 @@ CELERY_BROKER_URL = env.str("BROKER_URL", default="pyamqp://guest@broker:5672")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": []}
+SENTRY_DSN = env.str("SENTRY_DSN", default="")
