@@ -14,7 +14,6 @@ resources:
   - config.yaml
 images:
   - name: registry.gitlab.com/klavionik/cutto/backend
-    newTag: v1.1.1
+    newTag: v1.2.0
   - name: registry.gitlab.com/klavionik/cutto/frontend
-    newTag: v1.1.1
-
+    newTag: v1.2.0
