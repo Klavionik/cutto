@@ -1,46 +1,28 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: batch/v1
+kind: Job
 metadata:
-  name: worker
-  namespace: cutto
-  labels:
-    service: worker
+  name: migrate
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      service: worker
   template:
     metadata:
+      name: migrate
       labels:
-        service: worker
+        service: migrate
     spec:
       initContainers:
-        - name: wait-for-migration
-          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
-          imagePullPolicy: IfNotPresent
-          args:
-            - "job"
-            - "-lservice=migrate"
-        - name: wait-for-broker
-          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+        - name: wait-for-db
+          image: ghcr.io/groundnuty/k8s-wait-for:v2.0
           imagePullPolicy: IfNotPresent
           args:
             - "pod"
-            - "-lservice=broker"
+            - "-lservice=database"
       containers:
-        - name: worker
+        - name: migrate
           image: registry.gitlab.com/klavionik/cutto/backend
           command:
             - python
-            - -m
-            - celery
-            - --app
-            - project
-            - worker
-            - --beat
-            - --scheduler
-            - django
+            - manage.py
+            - migrate
           env:
             - name: SENTRY_DSN
               valueFrom:
@@ -77,3 +59,4 @@ spec:
                 configMapKeyRef:
                   key: csrf_trusted_origins
                   name: config
+      restartPolicy: Never

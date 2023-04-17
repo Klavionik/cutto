@@ -1,6 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: cutto
 resources:
   - namespace.yaml
   - backend.yaml
@@ -9,9 +8,6 @@ resources:
   - db.yaml
   - worker.yaml
   - migrate.yaml
-  - ingress.yaml
-  - sealed-secret.yaml
-  - config.yaml
 images:
   - name: registry.gitlab.com/klavionik/cutto/backend
     newTag: v1.2.0

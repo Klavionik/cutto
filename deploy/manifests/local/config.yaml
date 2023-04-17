@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  csrf_trusted_origins: "https://cutto.localhost"
+  debug: "true"
+  allowed_hosts: "cutto.localhost"
+  host: ":80"
+  database_name: postgres

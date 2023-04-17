@@ -14,7 +14,7 @@ spec:
     spec:
       initContainers:
         - name: wait-for-backend
-          image: ghcr.io/groundnuty/k8s-wait-for:v1.6
+          image: ghcr.io/groundnuty/k8s-wait-for:v2.0
           imagePullPolicy: IfNotPresent
           args:
             - "pod"
