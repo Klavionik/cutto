@@ -37,6 +37,8 @@ spec:
             - --app
             - project
             - worker
+            - --concurrency
+            - "2"
             - --beat
             - --scheduler
             - django
