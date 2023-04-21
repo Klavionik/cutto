@@ -72,3 +72,7 @@ tasks:
   ps:
     cmds:
       - docker compose ps -a
+
+  deploy.local:
+    cmds:
+      - kubectl apply -k deploy/manifests/local
