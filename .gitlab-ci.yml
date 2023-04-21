@@ -96,10 +96,8 @@ deploy:
   environment:
     name: development
     url: https://cutto.klavionik.net
-  variables:
-    MANIFESTS_DIR: deploy/manifests/development
   script:
     - kubectl config use-context $KUBE_CONTEXT
     - kubectl -n cutto delete job/migrate || true
-    - kubectl apply -k $MANIFESTS_DIR && kubectl rollout status -k $MANIFESTS_DIR
+    - kubectl apply -k deploy/manifests/development
   when: manual
