@@ -10,7 +10,11 @@ jobs:
       contents: read
       packages: write
     steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+
       - uses: ./.github/actions/build-image@main
+        name: Build frontend image
         with:
           context: frontend
           service: frontend
@@ -21,7 +25,11 @@ jobs:
       contents: read
       packages: write
     steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+
       - uses: ./.github/actions/build-image@main
+        name: Build backend image
         with:
           context: backend
           service: backend

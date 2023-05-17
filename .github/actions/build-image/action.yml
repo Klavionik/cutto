@@ -10,8 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v3
-
     - name: Extract Docker image metadata
       id: meta
       uses: docker/metadata-action@v4
