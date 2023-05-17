@@ -131,7 +131,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 CORS_ALLOW_ALL_ORIGINS = env.bool("DEBUG", default=True)
 
-CELERY_BROKER_URL = env.str("BROKER_URL", default="pyamqp://guest@broker:5672")
+CELERY_BROKER_URL = env.str("BROKER_URL", default="redis://broker:6379/0")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": []}

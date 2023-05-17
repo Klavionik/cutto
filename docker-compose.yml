@@ -59,8 +59,7 @@ services:
       - ./backend:/app
 
   broker:
-    image: rabbitmq:3.8-alpine
-    hostname: broker
+    image: redis:7.0.9-alpine
     networks:
       - worker
 
