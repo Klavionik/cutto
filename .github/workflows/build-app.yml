@@ -8,25 +8,27 @@ on:
 
 jobs:
   build-frontend:
+    name: Build frontend service
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
       - uses: Klavionik/gh-actions/build-image@main
-        name: Build frontend service
+        name: Build
         with:
           context: frontend
           service: frontend
 
   build-backend:
+    name: Build backend service
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
       - uses: Klavionik/gh-actions/build-image@main
-        name: Build backend service
+        name: Build
         with:
           context: backend
           service: backend
