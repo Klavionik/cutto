@@ -13,11 +13,8 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout
-
-      - uses: ./.github/actions/build-image
-        name: Build frontend image
+      - uses: Klavionik/gh-actions/build-image@main
+        name: Build frontend service
         with:
           context: frontend
           service: frontend
@@ -28,11 +25,8 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout
-
-      - uses: ./.github/actions/build-image
-        name: Build backend image
+      - uses: Klavionik/gh-actions/build-image@main
+        name: Build backend service
         with:
           context: backend
           service: backend
