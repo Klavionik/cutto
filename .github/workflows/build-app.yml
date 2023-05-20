@@ -9,7 +9,7 @@ on:
 jobs:
   build-frontend:
     name: Build frontend service
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, arm64]
     permissions:
       contents: read
       packages: write
@@ -22,7 +22,7 @@ jobs:
 
   build-backend:
     name: Build backend service
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, arm64]
     permissions:
       contents: read
       packages: write
