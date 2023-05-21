@@ -19,6 +19,9 @@ jobs:
         with:
           context: frontend
           service: frontend
+          cache-access-key: ${{ secrets.S3_ACCESS_KEY }}
+          cache-secret-key: ${{ secrets.S3_SECRET_KEY }}
+          cache-bucket: cutto-build-cache
 
   build-backend:
     name: Build backend service
