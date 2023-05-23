@@ -29,6 +29,7 @@ def query_geoip(click_id: int):
 
     response = requests.get(
         f"http://ip-api.com/json/{click.origin_ip}?fields=status,message,country",
+        timeout=10.0,
     )
     response.raise_for_status()
 
