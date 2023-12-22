@@ -35,6 +35,8 @@ services:
       - backend
       - worker
       - db
+    healthcheck:
+      test: curl
 
   worker:
     build:
