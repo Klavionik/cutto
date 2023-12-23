@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.urls import path
 
 from shortener.api.views import (
@@ -8,6 +9,11 @@ from shortener.api.views import (
     OwnerCreateAPIView,
     OwnerRetrieveAPIView,
 )
+
+
+def healthz(_):
+    return HttpResponse("OK")
+
 
 urlpatterns = [
     path("links/", LinkCreateAPIView.as_view(), name="link_create"),
@@ -20,4 +26,5 @@ urlpatterns = [
         name="link_clicks_list",
     ),
     path("alias-availablity/<slug:alias>/", AliasAvailabilityAPIView.as_view()),
+    path("healthz/", healthz, name="health"),
 ]
